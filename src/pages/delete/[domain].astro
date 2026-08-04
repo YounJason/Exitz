@@ -1,0 +1,17 @@
+---
+// @ts-ignore
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  
+  return posts.map((post: { data: { domain: string }; slug: string }) => ({
+    params: { domain: post.data.domain.toLowerCase() },
+    props: { slug: post.slug },
+  }));
+}
+
+const { slug } = Astro.props;
+
+return Astro.redirect(`/blog/${slug}`);
+---

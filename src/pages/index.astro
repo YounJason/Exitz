@@ -1,0 +1,58 @@
+---
+// @ts-ignore
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+
+const posts = await getCollection('blog');
+
+const domainMap = JSON.stringify(
+  posts.map((post: { data: { domain: string }; slug: string }) => ({
+    domain: post.data.domain.toLowerCase(),
+    slug: post.slug,
+  }))
+);
+---
+
+<Layout title="EXITZ">
+  <main>
+    <form id="search-form" style="display: flex; gap: 8px; margin-bottom: 20px;">
+      <input 
+        type="text" 
+        id="domain-input" 
+        placeholder="naver.com" 
+        required 
+        style="padding: 10px; width: 300px;"
+      />
+      <button type="submit" style="padding: 10px 20px;">검색</button>
+    </form>
+
+    <p id="error-message" style="color: red; display: none;">
+      없음
+    </p>
+  </main>
+
+  <script is:inline define:vars={{ domainMapJson: domainMap }}>
+    const domainData = JSON.parse(domainMapJson);
+    const form = document.getElementById('search-form');
+    const input = document.getElementById('domain-input');
+    const errorMsg = document.getElementById('error-message');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      errorMsg.style.display = 'none';
+
+      let cleanedDomain = input.value.trim().toLowerCase()
+        .replace(/^https?:\/\//, '')
+        .replace(/^www\./, '')
+        .split('/')[0];
+
+      const target = domainData.find(item => item.domain === cleanedDomain);
+
+      if (target) {
+        window.location.href = `/blog/${target.slug}`;
+      } else {
+        errorMsg.style.display = 'block';
+      }
+    });
+  </script>
+</Layout>
