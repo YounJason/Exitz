@@ -1,7 +1,7 @@
 // @ts-ignore
 import { defineCollection, z } from 'astro:content';
 
-const blogCollection = defineCollection({
+const exitCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
@@ -11,7 +11,16 @@ const blogCollection = defineCollection({
   }),
 });
 
+const privacyCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    pubDate: z.date(),
+  }),
+});
+
 export const collections = {
-  blog: blogCollection,
-  delete: blogCollection,
+  blog: exitCollection,
+  privacy: privacyCollection,
 };

@@ -1,0 +1,114 @@
+---
+//@ts-ignore
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post: { slug: any; }) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<Layout title={post.data.title}>
+  <div class="container article-container">
+    <nav class="breadcrumb">
+      <a href="/">도움말 센터</a> &gt; <span>탈퇴 가이드</span>
+    </nav>
+
+    <article class="article-content">
+      <h1>{post.data.title}</h1>
+      
+      <div class="article-meta">
+        <span>대상 도메인: <strong>{post.data.domain}</strong></span>
+        <span class="dot">•</span>
+        <span>최근 업데이트: {post.data.pubDate.toISOString().slice(0, 10)}</span>
+      </div>
+
+      <hr class="divider" />
+      <div class="markdown-body">
+        <Content />
+      </div>
+    </article>
+  </div>
+</Layout>
+
+<style>
+  .article-container {
+    padding-top: 32px;
+    padding-bottom: 60px;
+  }
+
+  .breadcrumb {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+  }
+
+  .breadcrumb a {
+    color: var(--google-blue);
+    text-decoration: none;
+  }
+
+  .article-content h1 {
+    font-size: 2rem;
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+
+  .article-meta {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .dot {
+    font-size: 0.8rem;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 24px 0;
+  }
+
+  .markdown-body :global(h2) {
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-top: 32px;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+  }
+
+  .markdown-body :global(p) {
+    margin-bottom: 16px;
+    color: #3c4043;
+    font-size: 1rem;
+  }
+
+  .markdown-body :global(ol), .markdown-body :global(ul) {
+    margin-bottom: 20px;
+    padding-left: 24px;
+  }
+
+  .markdown-body :global(li) {
+    margin-bottom: 8px;
+    color: #3c4043;
+  }
+
+  .markdown-body :global(blockquote) {
+    background-color: #e8f0fe;
+    border-left: 4px solid var(--google-blue);
+    padding: 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 20px 0;
+    color: #174ea6;
+  }
+</style>

@@ -3,56 +3,219 @@
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 
-const posts = await getCollection('blog');
+const exitPosts = await getCollection('blog');
+const privacyPosts = await getCollection('privacy');
 
 const domainMap = JSON.stringify(
-  posts.map((post: { data: { domain: string }; slug: string }) => ({
+  exitPosts.map((post: { data: { domain: string; }; slug: any; }) => ({
     domain: post.data.domain.toLowerCase(),
     slug: post.slug,
+    type: 'exit'
+  }))
+);
+
+const privacySearchData = JSON.stringify(
+  privacyPosts.map((post: { data: { title: string; }; slug: any; }) => ({
+    title: post.data.title.toLowerCase(),
+    slug: post.slug,
+    type: 'help'
   }))
 );
 ---
 
-<Layout title="EXITZ">
-  <main>
-    <form id="search-form" style="display: flex; gap: 8px; margin-bottom: 20px;">
-      <input 
-        type="text" 
-        id="domain-input" 
-        placeholder="naver.com" 
-        required 
-        style="padding: 10px; width: 300px;"
-      />
-      <button type="submit" style="padding: 10px 20px;">검색</button>
-    </form>
+<Layout title="Exitz">
+  <section class="hero-section">
+    <div class="hero-container">
+      <h1>Exitz</h1>
+      <p class="subtitle">회원 탈퇴도 쉬워야 하니까.</p>
 
-    <p id="error-message" style="color: red; display: none;">
-      없음
-    </p>
-  </main>
+      <form id="search-form" class="search-box">
+        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5f6368" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input 
+          type="text" 
+          id="search-input" 
+          placeholder="" 
+          required 
+          autocomplete="off"
+        />
+        <button type="submit">검색</button>
+      </form>
 
-  <script is:inline define:vars={{ domainMapJson: domainMap }}>
-    const domainData = JSON.parse(domainMapJson);
-    const form = document.getElementById('search-form');
-    const input = document.getElementById('domain-input');
-    const errorMsg = document.getElementById('error-message');
+      <div id="error-message" class="error-banner" style="display: none;">
+        <span>찾을 수 없습니다.</span>
+      </div>
+    </div>
+  </section>
 
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      errorMsg.style.display = 'none';
+  <!-- 메인 2열 그리드 컨텐츠 영역 -->
+  <section class="content-section">
+    <div class="container main-grid">
+      
+      <div class="column">
+        <div class="column-header">
+          <div class="icon-wrap red">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d93025" stroke-width="2.5">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+          </div>
+          <h2>계정 탈퇴 가이드</h2>
+        </div>
 
-      let cleanedDomain = input.value.trim().toLowerCase()
-        .replace(/^https?:\/\//, '')
-        .replace(/^www\./, '')
-        .split('/')[0];
+        <div class="card-list">
+          {exitPosts.map((post: { slug: any; data: { title: unknown; domain: unknown; }; }) => (
+            <a href={`/x/${post.slug}`} class="help-card">
+              <div class="card-content">
+                <h3>{post.data.title}</h3>
+                <span class="domain-tag">{post.data.domain}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
 
-      const target = domainData.find(item => item.domain === cleanedDomain);
+      <div class="column">
+        <div class="column-header">
+          <div class="icon-wrap blue">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a73e8" stroke-width="2.5">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </div>
+          <h2>개인정보 도움말</h2>
+        </div>
 
-      if (target) {
-        window.location.href = `/blog/${target.slug}`;
-      } else {
-        errorMsg.style.display = 'block';
-      }
-    });
-  </script>
+        <div class="card-list">
+          {privacyPosts.map((post: { slug: any; data: { title: unknown; description: unknown; }; }) => (
+            <a href={`/h/${post.slug}`} class="help-card">
+              <div class="card-content">
+                <h3>{post.data.title}</h3>
+                <p class="desc">{post.data.description}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  </section>
 </Layout>
+
+<script is:inline define:vars={{ domainMapJson: domainMap, privacySearchJson: privacySearchData }}>
+  const domainData = JSON.parse(domainMapJson);
+  const privacyData = JSON.parse(privacySearchJson);
+  const form = document.getElementById('search-form');
+  const input = document.getElementById('search-input');
+  const errorMsg = document.getElementById('error-message');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    errorMsg.style.display = 'none';
+
+    const query = input.value.trim().toLowerCase();
+
+    let cleanedDomain = query
+      .replace(/^https?:\/\//, '')
+      .replace(/^www\./, '')
+      .split('/')[0];
+
+    const targetExit = domainData.find(item => item.domain === cleanedDomain);
+
+    if (targetExit) {
+      window.location.href = `/x/${targetExit.slug}`;
+      return;
+    }
+
+    const targetHelp = privacyData.find(item => item.title.includes(query));
+
+    if (targetHelp) {
+      window.location.href = `/h/${targetHelp.slug}`;
+      return;
+    }
+
+    errorMsg.style.display = 'block';
+  });
+
+  //placeholder typing effect
+  const placeholderTexts = [
+    "facebook.com",
+    "instagram.com",
+    "twitter.com",
+    "youtube.com"
+  ];
+
+  let currentIndex = 0;
+
+  function typePlaceholder() {
+    const text = placeholderTexts[currentIndex];
+    let charIndex = 0;
+    input.placeholder = "";
+
+    const typingInterval = setInterval(() => {
+      if (charIndex < text.length) {
+        input.placeholder += text.charAt(charIndex);
+        charIndex++;
+      } else {
+        clearInterval(typingInterval);
+
+        setTimeout(() => {
+          erasePlaceholder();
+        }, 1500);
+      }
+    }, 100);
+  }
+
+  function erasePlaceholder() {
+    const erasingInterval = setInterval(() => {
+      if (input.placeholder.length > 0) {
+        input.placeholder = input.placeholder.slice(0, -1);
+      } else {
+        clearInterval(erasingInterval);
+        currentIndex = (currentIndex + 1) % placeholderTexts.length;
+        typePlaceholder();
+      }
+    }, 30);
+}
+
+typePlaceholder();
+</script>
+
+<style>
+  .hero-section { background-color: var(--bg-light); padding: 50px 20px; text-align: center; border-bottom: 1px solid var(--border-color); }
+  .hero-container { max-width: 680px; margin: 0 auto; }
+  .hero-section h1 { font-size: 2.2rem; font-weight: 500; margin-bottom: 8px; }
+  .subtitle { color: var(--text-secondary); margin-bottom: 28px; }
+
+  .search-box { display: flex; align-items: center; background: #fff; border: 1px solid var(--border-color); border-radius: 8px; padding: 6px 16px; box-shadow: 0 1px 6px rgba(32, 33, 36, 0.08); }
+  .search-icon { margin-right: 12px; }
+  .search-box input { flex: 1; border: none; outline: none; font-size: 1rem; padding: 10px 0; }
+  .search-box button { background-color: var(--google-blue); color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 500; cursor: pointer; }
+
+  .error-banner { margin-top: 16px; padding: 12px; background-color: #fce8e6; color: #c5221f; border-radius: 8px; font-size: 0.9rem; }
+
+  .content-section { padding: 40px 0; }
+  .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; max-width: 1024px; }
+
+  @media (max-width: 768px) {
+    .main-grid { grid-template-columns: 1fr; }
+  }
+
+  .column-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .column-header h2 { font-size: 1.25rem; font-weight: 500; }
+  
+  .icon-wrap { padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .icon-wrap.red { background-color: #fce8e6; }
+  .icon-wrap.blue { background-color: #e8f0fe; }
+
+  .card-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .help-card { display: block; padding: 16px 20px; border: 1px solid var(--border-color); border-radius: 8px; text-decoration: none; color: inherit; transition: border-color 0.2s, box-shadow 0.2s; }
+  .help-card:hover { border-color: var(--google-blue); box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+
+  .card-content h3 { font-size: 1rem; font-weight: 500; color: var(--google-blue); margin-bottom: 4px; }
+  .domain-tag { font-size: 0.8rem; background-color: var(--bg-light); padding: 2px 8px; border-radius: 4px; color: var(--text-secondary); border: 1px solid var(--border-color); }
+  .desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4; }
+</style>
