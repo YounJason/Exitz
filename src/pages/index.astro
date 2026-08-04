@@ -49,7 +49,7 @@ const domainMap = JSON.stringify(
       const target = domainData.find(item => item.domain === cleanedDomain);
 
       if (target) {
-        window.location.href = `/blog/${target.slug}`;
+        window.location.href = `/p/${target.slug}`;
       } else {
         errorMsg.style.display = 'block';
       }
