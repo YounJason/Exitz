@@ -1,221 +1,487 @@
 ---
 // @ts-ignore
-import { getCollection } from 'astro:content';
-import Layout from '../layouts/Layout.astro';
-
-const exitPosts = await getCollection('blog');
-const privacyPosts = await getCollection('privacy');
-
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+const exitPosts = await getCollection("blog");
+const privacyPosts = await getCollection("privacy");
 const domainMap = JSON.stringify(
-  exitPosts.map((post: { data: { domain: string; }; slug: any; }) => ({
+  exitPosts.map((post: any) => ({
     domain: post.data.domain.toLowerCase(),
     slug: post.slug,
-    type: 'exit'
-  }))
+  })),
 );
-
 const privacySearchData = JSON.stringify(
-  privacyPosts.map((post: { data: { title: string; }; slug: any; }) => ({
+  privacyPosts.map((post: any) => ({
     title: post.data.title.toLowerCase(),
     slug: post.slug,
-    type: 'help'
-  }))
+  })),
 );
 ---
 
 <Layout title="Exitz">
-  <section class="hero-section">
-    <div class="hero-container">
-      <h1>Exitz</h1>
-      <p class="subtitle">회원 탈퇴도 쉬워야 하니까.</p>
-
-      <form id="search-form" class="search-box">
-        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5f6368" stroke-width="2">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-        <input 
-          type="text" 
-          id="search-input" 
-          placeholder="" 
-          required 
+  <section class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">ACCOUNT EXIT GUIDE</p><h1>
+        떠나는 것도,<br /><em>깔끔하게.</em>
+      </h1><p class="intro">
+        서비스 이름이나 도메인을 검색하면<br />회원 탈퇴 방법을 바로 찾아드려요.
+      </p><form id="search-form" class="search-box">
+        <span class="search-icon" aria-hidden="true">⌕</span><input
+          id="search-input"
+          type="text"
+          placeholder=""
+          required
           autocomplete="off"
-        />
-        <button type="submit">검색</button>
-      </form>
-
-      <div id="error-message" class="error-banner" style="display: none;">
-        <span>찾을 수 없습니다.</span>
-      </div>
+          aria-label="서비스 검색"
+        /><button type="submit">찾기</button>
+      </form><p id="error-message" class="error" hidden>
+        해당 서비스를 아직 찾지 못했어요.
+      </p>
     </div>
   </section>
-
-  <!-- 메인 2열 그리드 컨텐츠 영역 -->
-  <section class="content-section">
-    <div class="container main-grid">
-      
-      <div class="column">
-        <div class="column-header">
-          <div class="icon-wrap red">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d93025" stroke-width="2.5">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-              <polyline points="16 17 21 12 16 7"></polyline>
-              <line x1="21" y1="12" x2="9" y2="12"></line>
-            </svg>
-          </div>
-          <h2>계정 탈퇴 가이드</h2>
-        </div>
-
-        <div class="card-list">
-          {exitPosts.map((post: { slug: any; data: { title: unknown; domain: unknown; }; }) => (
-            <a href={`/x/${post.slug}`} class="help-card">
-              <div class="card-content">
-                <h3>{post.data.title}</h3>
-                <span class="domain-tag">{post.data.domain}</span>
-              </div>
-            </a>
-          ))}
-        </div>
-      </div>
-
-      <div class="column">
-        <div class="column-header">
-          <div class="icon-wrap blue">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a73e8" stroke-width="2.5">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-            </svg>
-          </div>
-          <h2>개인정보 도움말</h2>
-        </div>
-
-        <div class="card-list">
-          {privacyPosts.map((post: { slug: any; data: { title: unknown; description: unknown; }; }) => (
-            <a href={`/h/${post.slug}`} class="help-card">
-              <div class="card-content">
-                <h3>{post.data.title}</h3>
-                <p class="desc">{post.data.description}</p>
-              </div>
-            </a>
-          ))}
-        </div>
-      </div>
-
+  <section class="content">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">EXPLORE</p><h2>필요한 정보를 골라보세요.</h2>
+      </div><span class="count"
+        >{exitPosts.length} exit guides · {privacyPosts.length} tips</span>
     </div>
+    <section class="guide-section">
+      <div class="section-label">
+        <span class="label-number">01</span><div>
+          <h3>계정 탈퇴 가이드</h3><p>서비스별 탈퇴 방법을 한눈에</p>
+        </div>
+      </div><div class="carousel-window" aria-label="계정 탈퇴 가이드 목록">
+        <div class="guide-track">
+          {
+            [...exitPosts, ...exitPosts].map((post: any) => (
+              <a href={`/x/${post.slug}`} class="guide-card">
+                <span class="card-arrow">↗</span>
+                {post.data.logo && (
+                  <img
+                    class="service-logo"
+                    src={post.data.logo}
+                    alt=""
+                    loading="lazy"
+                  />
+                )}
+                <div class="card-copy">
+                  <>
+                    <h4>{post.data.title}</h4>
+                    <span class="domain">{post.data.domain}</span>
+                  </>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+    <section class="guide-section tips-section">
+      <div class="section-label">
+        <span class="label-number">02</span><div>
+          <h3>개인정보 도움말</h3><p>탈퇴 전에 알아두면 좋은 내용</p>
+        </div>
+      </div><div class="tips-list">
+        {
+          privacyPosts.slice(0, 4).map((post: any) => (
+            <a href={`/h/${post.slug}`} class="tip-card">
+              <>
+                <div>
+                  <>
+                    <h4>{post.data.title}</h4>
+                    <p>{post.data.description}</p>
+                  </>
+                </div>
+                <span class="card-arrow">↗</span>
+              </>
+            </a>
+          ))
+        }
+      </div>
+    </section>
   </section>
 </Layout>
-
-<script is:inline define:vars={{ domainMapJson: domainMap, privacySearchJson: privacySearchData }}>
+<script
+  is:inline
+  define:vars={{
+    domainMapJson: domainMap,
+    privacySearchJson: privacySearchData,
+  }}
+>
   const domainData = JSON.parse(domainMapJson);
   const privacyData = JSON.parse(privacySearchJson);
-  const form = document.getElementById('search-form');
-  const input = document.getElementById('search-input');
-  const errorMsg = document.getElementById('error-message');
-
-  form.addEventListener('submit', (e) => {
+  const form = document.getElementById("search-form");
+  const input = document.getElementById("search-input");
+  const errorMsg = document.getElementById("error-message");
+  form?.addEventListener("submit", (e) => {
     e.preventDefault();
-    errorMsg.style.display = 'none';
-
+    errorMsg.hidden = true;
     const query = input.value.trim().toLowerCase();
-
-    let cleanedDomain = query
-      .replace(/^https?:\/\//, '')
-      .replace(/^www\./, '')
-      .split('/')[0];
-
-    const targetExit = domainData.find(item => item.domain === cleanedDomain);
-
-    if (targetExit) {
-      window.location.href = `/x/${targetExit.slug}`;
+    const domain = query
+      .replace(/^https?:\/\//, "")
+      .replace(/^www\./, "")
+      .split("/")[0];
+    const exit = domainData.find((x) => x.domain === domain);
+    if (exit) {
+      location.href = `/x/${exit.slug}`;
       return;
     }
-
-    const targetHelp = privacyData.find(item => item.title.includes(query));
-
-    if (targetHelp) {
-      window.location.href = `/h/${targetHelp.slug}`;
+    const help = privacyData.find((x) => x.title.includes(query));
+    if (help) {
+      location.href = `/h/${help.slug}`;
       return;
     }
-
-    errorMsg.style.display = 'block';
+    errorMsg.hidden = false;
   });
-
-  //placeholder typing effect
   const placeholderTexts = [
     "facebook.com",
     "instagram.com",
     "twitter.com",
-    "youtube.com"
+    "youtube.com",
   ];
-
   let currentIndex = 0;
-
   function typePlaceholder() {
     const text = placeholderTexts[currentIndex];
     let charIndex = 0;
     input.placeholder = "";
-
     const typingInterval = setInterval(() => {
       if (charIndex < text.length) {
         input.placeholder += text.charAt(charIndex);
         charIndex++;
       } else {
         clearInterval(typingInterval);
-
-        setTimeout(() => {
-          erasePlaceholder();
-        }, 1500);
+        setTimeout(erasePlaceholder, 1500);
       }
     }, 100);
   }
-
   function erasePlaceholder() {
     const erasingInterval = setInterval(() => {
-      if (input.placeholder.length > 0) {
+      if (input.placeholder.length > 0)
         input.placeholder = input.placeholder.slice(0, -1);
-      } else {
+      else {
         clearInterval(erasingInterval);
         currentIndex = (currentIndex + 1) % placeholderTexts.length;
         typePlaceholder();
       }
     }, 30);
-}
-
-typePlaceholder();
-</script>
-
-<style>
-  .hero-section { background-color: var(--bg-light); padding: 50px 20px; text-align: center; border-bottom: 1px solid var(--border-color); }
-  .hero-container { max-width: 680px; margin: 0 auto; }
-  .hero-section h1 { font-size: 2.2rem; font-weight: 500; margin-bottom: 8px; }
-  .subtitle { color: var(--text-secondary); margin-bottom: 28px; }
-
-  .search-box { display: flex; align-items: center; background: #fff; border: 1px solid var(--border-color); border-radius: 8px; padding: 6px 16px; box-shadow: 0 1px 6px rgba(32, 33, 36, 0.08); }
-  .search-icon { margin-right: 12px; }
-  .search-box input { flex: 1; border: none; outline: none; font-size: 1rem; padding: 10px 0; }
-  .search-box button { background-color: var(--google-blue); color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 500; cursor: pointer; }
-
-  .error-banner { margin-top: 16px; padding: 12px; background-color: #fce8e6; color: #c5221f; border-radius: 8px; font-size: 0.9rem; }
-
-  .content-section { padding: 40px 0; }
-  .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; max-width: 1024px; }
-
-  @media (max-width: 768px) {
-    .main-grid { grid-template-columns: 1fr; }
   }
-
-  .column-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-  .column-header h2 { font-size: 1.25rem; font-weight: 500; }
-  
-  .icon-wrap { padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-  .icon-wrap.red { background-color: #fce8e6; }
-  .icon-wrap.blue { background-color: #e8f0fe; }
-
-  .card-list { display: flex; flex-direction: column; gap: 12px; }
-
-  .help-card { display: block; padding: 16px 20px; border: 1px solid var(--border-color); border-radius: 8px; text-decoration: none; color: inherit; transition: border-color 0.2s, box-shadow 0.2s; }
-  .help-card:hover { border-color: var(--google-blue); box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
-
-  .card-content h3 { font-size: 1rem; font-weight: 500; color: var(--google-blue); margin-bottom: 4px; }
-  .domain-tag { font-size: 0.8rem; background-color: var(--bg-light); padding: 2px 8px; border-radius: 4px; color: var(--text-secondary); border: 1px solid var(--border-color); }
-  .desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4; }
+  typePlaceholder();
+</script>
+<style>
+  .hero {
+    border-bottom: 1px solid var(--line);
+    background: radial-gradient(circle at 50% 15%, #fff 0, transparent 45%);
+    padding: 92px 20px 84px;
+  }
+  .hero-inner {
+    width: min(720px, 100%);
+    margin: auto;
+    text-align: center;
+  }
+  .eyebrow {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: clamp(3rem, 8vw, 5.8rem);
+    line-height: 0.98;
+    letter-spacing: -0.075em;
+    font-weight: 700;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: #77746d;
+  }
+  .intro {
+    font-size: 1rem;
+    color: var(--muted);
+    margin: 26px 0 34px;
+  }
+  .search-box {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid #d9d7d0;
+    border-radius: 16px;
+    padding: 7px 7px 7px 20px;
+    box-shadow: 0 12px 36px rgba(23, 23, 23, 0.07);
+    text-align: left;
+    transition: 0.2s;
+  }
+  .search-box:focus-within {
+    border-color: #99958c;
+    box-shadow: 0 14px 42px rgba(23, 23, 23, 0.11);
+  }
+  .search-icon {
+    font-size: 1.6rem;
+    color: var(--muted);
+    line-height: 1;
+    margin-right: 10px;
+  }
+  .search-box input {
+    min-width: 0;
+    flex: 1;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    font-size: 1rem;
+    color: var(--ink);
+  }
+  .search-box input::placeholder {
+    color: #aaa;
+  }
+  .search-box button {
+    border: 0;
+    background: var(--ink);
+    color: #fff;
+    height: 50px;
+    padding: 0 23px;
+    border-radius: 11px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .search-box button:hover {
+    background: #333;
+  }
+  .error {
+    margin-top: 12px;
+    color: var(--danger);
+    font-size: 0.86rem;
+  }
+  .content {
+    width: min(1080px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 72px 0;
+  }
+  .section-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    margin-bottom: 38px;
+  }
+  .section-head .eyebrow {
+    margin-bottom: 5px;
+  }
+  .section-head h2 {
+    font-size: 1.7rem;
+    letter-spacing: -0.045em;
+  }
+  .count {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .guide-section {
+    margin-bottom: 64px;
+  }
+  .section-label {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 12px;
+  }
+  .label-number {
+    font-size: 0.7rem;
+    color: var(--muted);
+    padding-top: 4px;
+  }
+  .section-label h3 {
+    font-size: 1.1rem;
+    letter-spacing: -0.025em;
+  }
+  .section-label p {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .carousel-window {
+    position: relative;
+    overflow: hidden;
+    margin: 0 -20px;
+    padding: 0 20px;
+  }
+  .carousel-window:before,
+  .carousel-window:after {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    bottom: 0;
+    width: 70px;
+    pointer-events: none;
+  }
+  .carousel-window:before {
+    left: 0;
+    background: linear-gradient(90deg, var(--background), transparent);
+  }
+  .carousel-window:after {
+    right: 0;
+    background: linear-gradient(270deg, var(--background), transparent);
+  }
+  .guide-track {
+    display: flex;
+    width: max-content;
+    animation: conveyor 34s linear infinite;
+    will-change: transform;
+  }
+  .carousel-window:hover .guide-track {
+    animation-play-state: paused;
+  }
+  .guide-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 280px;
+    min-height: 92px;
+    flex: 0 0 280px;
+    text-decoration: none;
+    padding: 16px 34px 16px 2px;
+    margin-right: 18px;
+    border-bottom: 1px solid var(--line);
+    transition: 0.2s;
+  }
+  .guide-card:hover {
+    padding-left: 9px;
+    background: rgba(255, 255, 255, 0.55);
+  }
+  .service-logo {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    object-fit: contain;
+    border-radius: 11px;
+    background: #fff;
+    border: 1px solid var(--line);
+    padding: 7px;
+  }
+  .card-copy {
+    min-width: 0;
+  }
+  .guide-card h4,
+  .tip-card h4 {
+    font-size: 0.96rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .domain {
+    display: inline-block;
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 0.72rem;
+  }
+  .card-arrow {
+    position: absolute;
+    right: 3px;
+    top: 20px;
+    color: #aaa;
+    font-size: 1.1rem;
+    transition: 0.2s;
+  }
+  .guide-card:hover .card-arrow,
+  .tip-card:hover .card-arrow {
+    right: 8px;
+    color: var(--ink);
+  }
+  @keyframes conveyor {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-50% - 9px));
+    }
+  }
+  .tips-section {
+    margin-bottom: 0;
+  }
+  .tips-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .tip-card {
+    position: relative;
+    display: block;
+    text-decoration: none;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px 38px 20px 20px;
+    background: var(--surface);
+    transition: 0.2s;
+  }
+  .tip-card:hover {
+    border-color: #bbb7ae;
+    transform: translateY(-2px);
+  }
+  .tip-card p {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 5px;
+    line-height: 1.5;
+  }
+  .tip-card .card-arrow {
+    top: 20px;
+    right: 16px;
+  }
+  .tip-card:hover .card-arrow {
+    right: 12px;
+  }
+  @media (max-width: 600px) {
+    .hero {
+      padding: 68px 14px 60px;
+    }
+    .hero h1 {
+      font-size: 3.5rem;
+    }
+    .content {
+      width: min(100% - 28px, 1080px);
+      padding: 52px 0;
+    }
+    .section-head {
+      align-items: start;
+      gap: 20px;
+    }
+    .count {
+      white-space: nowrap;
+    }
+    .carousel-window {
+      margin: 0 -14px;
+      padding: 0 14px;
+    }
+    .guide-card {
+      width: 245px;
+      flex-basis: 245px;
+    }
+    .tips-list {
+      grid-template-columns: 1fr;
+    }
+    .search-box {
+      height: 58px;
+    }
+    .search-box button {
+      height: 44px;
+      padding: 0 18px;
+    }
+    .guide-section {
+      margin-bottom: 52px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .guide-track {
+      animation: none;
+    }
+    .carousel-window {
+      overflow-x: auto;
+    }
+    .carousel-window:before,
+    .carousel-window:after {
+      display: none;
+    }
+  }
 </style>

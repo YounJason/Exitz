@@ -7,6 +7,7 @@ const exitCollection = defineCollection({
     title: z.string(),
     serviceName: z.string(),
     domain: z.string(),
+    logo: z.string().optional(),
     pubDate: z.date(),
   }),
 });
