@@ -1,0 +1,7 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+const posts = await getCollection('privacy');
+---
+<Layout title="개인정보 도움말"><section class="listing"><div class="heading"><p class="eyebrow">ALL PRIVACY TIPS</p><h1>개인정보 도움말</h1><p>탈퇴 전에 알아두면 좋은 개인정보 관련 내용을 모았습니다.</p></div><div class="grid">{posts.map((post) => <a class="card" href={`/h/${post.slug}`}><div><h2>{post.data.title}</h2><p>{post.data.description}</p></div><b>↗</b></a>)}</div></section></Layout>
+<style>.listing{width:min(1080px,calc(100% - 40px));margin:auto;padding:80px 0}.heading{margin-bottom:42px}.eyebrow{font-size:.7rem;letter-spacing:.14em;color:var(--muted);font-weight:700}.heading h1{font-size:clamp(2.4rem,6vw,4rem);letter-spacing:-.06em;margin:8px 0}.heading p:last-child{color:var(--muted)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{position:relative;display:block;padding:24px 48px 24px 22px;border:1px solid var(--line);border-radius:16px;background:var(--surface);text-decoration:none;transition:.2s}.card:hover{transform:translateY(-3px);border-color:#bbb7ae}.card h2{font-size:1rem}.card p{font-size:.8rem;color:var(--muted);margin-top:5px;line-height:1.5}.card b{position:absolute;right:18px;top:17px;color:#aaa}@media(max-width:600px){.listing{width:calc(100% - 28px);padding:60px 0}.grid{grid-template-columns:1fr}}</style>
