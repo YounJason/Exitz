@@ -22,6 +22,6 @@ const privacyCollection = defineCollection({
 });
 
 export const collections = {
-  blog: exitCollection,
-  privacy: privacyCollection,
+  exit: exitCollection,
+  help: privacyCollection,
 };

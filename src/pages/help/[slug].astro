@@ -1,0 +1,143 @@
+---
+// @ts-ignore
+import { getCollection, type CollectionEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+interface Props {
+  post: CollectionEntry<"help">;
+}
+
+export async function getStaticPaths() {
+  const posts = await getCollection("help");
+  return posts.map((post: { slug: any }) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const post = (Astro.props as Props).post;
+const { Content } = await post.render();
+---
+
+<Layout title={post.data.title}>
+  <div class="container article-container">
+    <nav class="breadcrumb">
+      <a href="/">Exitz</a> &gt; <a href="/help">개인정보 도움말</a>
+    </nav>
+
+    <article class="article-content">
+      <h1>{post.data.title}</h1>
+
+      <div class="article-meta">
+        {post.data.description && <p class="description">{post.data.description}</p>}
+        <span>최근 업데이트: {post.data.pubDate.toISOString().slice(0, 10)}</span>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="markdown-body">
+        <Content />
+      </div>
+    </article>
+  </div>
+</Layout>
+
+<style>
+  .article-container {
+    width: min(720px, calc(100% - 40px));
+    margin: 0 auto;
+    padding-top: 48px;
+    padding-bottom: 80px;
+  }
+
+  .breadcrumb {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 24px;
+    font-weight: 500;
+  }
+
+  .breadcrumb a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover {
+    text-decoration: underline;
+  }
+
+  .article-content h1 {
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+
+  .article-meta {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  .description {
+    font-size: 1.05rem;
+    color: var(--muted);
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 32px 0;
+  }
+
+  .markdown-body :global(h2) {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-top: 40px;
+    margin-bottom: 16px;
+    color: var(--ink);
+  }
+
+  .markdown-body :global(p) {
+    margin-bottom: 20px;
+    color: var(--ink);
+    line-height: 1.7;
+    font-size: 1rem;
+  }
+
+  .markdown-body :global(ol),
+  .markdown-body :global(ul) {
+    margin-bottom: 24px;
+    padding-left: 24px;
+    color: var(--ink);
+  }
+
+  .markdown-body :global(li) {
+    margin-bottom: 8px;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  .markdown-body :global(blockquote) {
+    background: #f2f4f6;
+    border-left: 4px solid var(--ink);
+    padding: 16px 20px;
+    border-radius: 0 12px 12px 0;
+    margin: 24px 0;
+    color: #333d4b;
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 600px) {
+    .article-container {
+      width: calc(100% - 28px);
+      padding-top: 36px;
+      padding-bottom: 60px;
+    }
+  }
+</style>

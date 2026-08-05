@@ -22,20 +22,24 @@ const { title } = Astro.props;
   <body>
     <header class="site-header">
       <div class="header-inner">
-        <a href="/" class="brand" aria-label="Exitz 홈"
-          ><span class="brand-mark">E</span><span>Exitz</span></a
-        >
-        <nav aria-label="주요 메뉴"><a href="/">탈퇴 가이드</a></nav>
+        <a href="/" class="brand" aria-label="Exitz 홈">
+          <span class="brand-mark">E</span><span>Exitz</span>
+        </a>
+        <nav aria-label="주요 메뉴">
+          <a href="/exit">탈퇴 가이드</a>
+          <a href="/help">개인정보 도움말</a>
+        </nav>
       </div>
     </header>
     <main><slot /></main>
     <footer class="site-footer">
       <div class="footer-inner">
-        <span>© 2026 Exitz</span><span>회원 탈퇴도 쉬워야 하니까.</span>
+        <span>© 2026 Exitz</span><span>Exitz</span>
       </div>
     </footer>
   </body>
 </html>
+
 <style is:global>
   :root {
     --ink: #171717;
@@ -113,10 +117,17 @@ const { title } = Astro.props;
     font-size: 0.82rem;
     font-weight: 700;
   }
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
   nav a {
     color: var(--muted);
     text-decoration: none;
     font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
   }
   nav a:hover {
     color: var(--ink);
@@ -140,6 +151,12 @@ const { title } = Astro.props;
     }
     .header-inner {
       height: 60px;
+    }
+    nav {
+      gap: 12px;
+    }
+    nav a {
+      font-size: 0.84rem;
     }
     .footer-inner {
       gap: 8px;
