@@ -5,24 +5,23 @@ import Layout from "../layouts/Layout.astro";
 const exitPosts = await getCollection("exit");
 const privacyPosts = await getCollection("help");
 
-const searchIndex = JSON.stringify([
-  ...exitPosts.map((post: any) => ({
-    title: post.data.title,
-    domain: (post.data.domain || "").toLowerCase(),
+const domainMap = JSON.stringify(
+  exitPosts.map((post: any) => ({
+    domain: post.data.domain.toLowerCase(),
     slug: post.slug,
-    type: "exit",
   })),
-  ...privacyPosts.map((post: any) => ({
-    title: post.data.title,
-    domain: "",
+);
+
+const privacySearchData = JSON.stringify(
+  privacyPosts.map((post: any) => ({
+    title: post.data.title.toLowerCase(),
     slug: post.slug,
-    type: "help",
   })),
-]);
+);
 ---
 
-<Layout title="Exitz">
-  <section class="hero">
+<Layout title="Exitz" indexTitle>
+    <section class="hero">
     <div class="hero-inner">
       <p class="eyebrow">ACCOUNT EXIT GUIDE</p>
       <h1>
@@ -31,24 +30,18 @@ const searchIndex = JSON.stringify([
       <p class="intro">
         서비스 이름이나 도메인을 검색하면<br />회원 탈퇴 방법을 바로 찾아드려요.
       </p>
-
-      <div class="search-wrapper">
-        <form id="search-form" class="search-box">
-          <span class="search-icon" aria-hidden="true">⌕</span>
-          <input
-            id="search-input"
-            type="text"
-            placeholder=""
-            required
-            autocomplete="off"
-            aria-label="서비스 검색"
-          />
-          <button type="submit">찾기</button>
-        </form>
-
-        <ul id="suggestions-list" class="suggestions-list" hidden></ul>
-      </div>
-
+      <form id="search-form" class="search-box">
+        <span class="search-icon" aria-hidden="true">⌕</span>
+        <input
+          id="search-input"
+          type="text"
+          placeholder=""
+          required
+          autocomplete="off"
+          aria-label="서비스 검색"
+        />
+        <button type="submit">찾기</button>
+      </form>
       <p id="error-message" class="error" hidden>
         해당 서비스를 아직 찾지 못했어요.
       </p>
@@ -184,149 +177,34 @@ const searchIndex = JSON.stringify([
 <script
   is:inline
   define:vars={{
-    searchIndexJson: searchIndex,
+    domainMapJson: domainMap,
+    privacySearchJson: privacySearchData,
   }}
 >
-  const searchData = JSON.parse(searchIndexJson);
+  const domainData = JSON.parse(domainMapJson);
+  const privacyData = JSON.parse(privacySearchJson);
   const form = document.getElementById("search-form");
   const input = document.getElementById("search-input");
   const errorMsg = document.getElementById("error-message");
-  const suggestionsList = document.getElementById("suggestions-list");
-
-  let selectedIndex = -1;
-
-  function renderSuggestions(matches, query) {
-    if (!query) {
-      suggestionsList.hidden = true;
-      suggestionsList.innerHTML = "";
-      return;
-    }
-
-    if (!matches.length) {
-      suggestionsList.innerHTML = `
-        <li class="suggestion-item empty">
-          <span class="empty-icon">🔍</span>
-          <span>'<strong>${query}</strong>' 검색 결과가 없습니다.</span>
-        </li>
-      `;
-      suggestionsList.hidden = false;
-      return;
-    }
-
-    suggestionsList.innerHTML = matches
-      .map(
-        (item, idx) => {
-          const isExit = item.type === "exit";
-          const metaText = item.domain || (isExit ? "가이드" : "도움말");
-          const metaClass = isExit ? "badge-exit" : "badge-help";
-
-          return `
-            <li class="suggestion-item ${idx === selectedIndex ? "active" : ""}" data-url="/${item.type}/${item.slug}">
-              <div class="suggestion-left">
-                <span class="suggestion-icon" aria-hidden="true">${isExit ? "🚪" : "💡"}</span>
-                <span class="suggestion-title">${item.title}</span>
-              </div>
-              <div class="suggestion-right">
-                <span class="suggestion-meta ${metaClass}">${metaText}</span>
-                <span class="suggestion-arrow" aria-hidden="true">↳</span>
-              </div>
-            </li>
-          `;
-        }
-      )
-      .join("");
-    suggestionsList.hidden = false;
-  }
-
-  input?.addEventListener("input", (e) => {
-    const query = e.target.value.trim().toLowerCase();
-    selectedIndex = -1;
-
-    if (!query) {
-      suggestionsList.hidden = true;
-      return;
-    }
-
-    const matches = searchData
-      .filter(
-        (item) =>
-          item.title.toLowerCase().includes(query) ||
-          item.domain.toLowerCase().includes(query)
-      )
-      .slice(0, 6);
-
-    renderSuggestions(matches, query);
-  });
-
-  suggestionsList?.addEventListener("click", (e) => {
-    const item = e.target.closest(".suggestion-item:not(.empty)");
-    if (item && item.dataset.url) {
-      location.href = item.dataset.url;
-    }
-  });
-
-  input?.addEventListener("keydown", (e) => {
-    const items = suggestionsList.querySelectorAll(".suggestion-item:not(.empty)");
-    if (suggestionsList.hidden || !items.length) return;
-
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      selectedIndex = (selectedIndex + 1) % items.length;
-      updateActiveItem(items);
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      selectedIndex = (selectedIndex - 1 + items.length) % items.length;
-      updateActiveItem(items);
-    } else if (e.key === "Escape") {
-      suggestionsList.hidden = true;
-    } else if (e.key === "Enter" && selectedIndex >= 0) {
-      e.preventDefault();
-      const activeItem = items[selectedIndex];
-      if (activeItem && activeItem.dataset.url) {
-        location.href = activeItem.dataset.url;
-      }
-    }
-  });
-
-  function updateActiveItem(items) {
-    items.forEach((item, index) => {
-      item.classList.toggle("active", index === selectedIndex);
-    });
-  }
-
-  document.addEventListener("click", (e) => {
-    if (!form.contains(e.target) && !suggestionsList.contains(e.target)) {
-      suggestionsList.hidden = true;
-    }
-  });
 
   form?.addEventListener("submit", (e) => {
     e.preventDefault();
     errorMsg.hidden = true;
-    suggestionsList.hidden = true;
-
     const query = input.value.trim().toLowerCase();
     const domain = query
       .replace(/^https?:\/\//, "")
       .replace(/^www\./, "")
       .split("/")[0];
-
-    const exit = searchData.find(
-      (x) => x.type === "exit" && (x.domain === domain || x.title.toLowerCase().includes(query))
-    );
+    const exit = domainData.find((x) => x.domain === domain);
     if (exit) {
       location.href = `/exit/${exit.slug}`;
       return;
     }
-
-    const help = searchData.find(
-      (x) => x.type === "help" && x.title.toLowerCase().includes(query)
-    );
+    const help = privacyData.find((x) => x.title.includes(query));
     if (help) {
       location.href = `/help/${help.slug}`;
       return;
     }
-
     errorMsg.hidden = false;
   });
 
@@ -369,161 +247,6 @@ const searchIndex = JSON.stringify([
 </script>
 
 <style>
-  /* 개선된 연관 검색어 드롭다운 스타일 */
-  .search-wrapper {
-    position: relative;
-    width: 100%;
-  }
-
-  .suggestions-list {
-    position: absolute;
-    top: calc(100% + 10px);
-    left: 0;
-    right: 0;
-    background: rgba(255, 255, 255, 0.96);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 20px;
-    box-shadow: 
-      0 20px 40px -12px rgba(0, 0, 0, 0.12),
-      0 0 0 1px rgba(0, 0, 0, 0.04);
-    list-style: none;
-    padding: 8px;
-    margin: 0;
-    z-index: 100;
-    max-height: 360px;
-    overflow-y: auto;
-    text-align: left;
-    animation: dropDownAppear 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  /* 드롭다운 스크롤바 미세 조정 */
-  .suggestions-list::-webkit-scrollbar {
-    width: 6px;
-  }
-  .suggestions-list::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.15);
-    border-radius: 99px;
-  }
-
-  @keyframes dropDownAppear {
-    from {
-      opacity: 0;
-      transform: translateY(-8px) scale(0.99);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-
-  .suggestion-item {
-    padding: 10px 14px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: background 0.15s ease, transform 0.15s ease;
-  }
-
-  .suggestion-item:hover,
-  .suggestion-item.active {
-    background: #f3f1ec;
-  }
-
-  .suggestion-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-width: 0;
-  }
-
-  .suggestion-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    font-size: 0.95rem;
-    background: #eceae4;
-    border-radius: 10px;
-    flex-shrink: 0;
-  }
-
-  .suggestion-title {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--ink);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .suggestion-right {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
-  }
-
-  .suggestion-meta {
-    font-size: 0.76rem;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 8px;
-    letter-spacing: -0.01em;
-  }
-
-  .suggestion-meta.badge-exit {
-    color: #3182f6;
-    background: #e8f3ff;
-  }
-
-  .suggestion-meta.badge-help {
-    color: #6b7280;
-    background: #f3f4f6;
-  }
-
-  .suggestion-arrow {
-    font-size: 0.85rem;
-    color: #b0adad;
-    opacity: 0;
-    transform: translateX(-4px);
-    transition: all 0.15s ease;
-  }
-
-  .suggestion-item:hover .suggestion-arrow,
-  .suggestion-item.active .suggestion-arrow {
-    opacity: 1;
-    transform: translateX(0);
-    color: var(--ink);
-  }
-
-  /* 검색 결과 없음 스타일 */
-  .suggestion-item.empty {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    color: var(--muted);
-    font-size: 0.9rem;
-    padding: 28px 16px;
-    cursor: default;
-  }
-
-  .suggestion-item.empty .empty-icon {
-    font-size: 1.5rem;
-    opacity: 0.6;
-  }
-
-  .suggestion-item.empty:hover {
-    background: transparent;
-  }
-
-  /* 메인 기존 스타일 */
   .hero {
     border-bottom: 1px solid var(--line);
     background: radial-gradient(circle at 50% 15%, #fff 0, transparent 45%);

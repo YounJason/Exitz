@@ -1,8 +1,10 @@
 ---
 interface Props {
   title: string;
+  indexTitle?: boolean;
 }
-const { title } = Astro.props;
+
+const { title, indexTitle = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -11,7 +13,7 @@ const { title } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#f7f7f5" />
-    <title>{title} · Exitz</title>
+    <title>{indexTitle ? title : `${title} · Exitz`}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -23,7 +25,7 @@ const { title } = Astro.props;
     <header class="site-header">
       <div class="header-inner">
         <a href="/" class="brand" aria-label="Exitz 홈">
-          <span class="brand-mark">E</span><span>Exitz</span>
+          <span>Exitz</span>
         </a>
         <nav aria-label="주요 메뉴">
           <a href="/exit">탈퇴 가이드</a>
@@ -101,21 +103,10 @@ const { title } = Astro.props;
     display: inline-flex;
     align-items: center;
     gap: 9px;
-    font-size: 1.08rem;
+    font-size: 1.5rem;
     font-weight: 700;
     text-decoration: none;
     letter-spacing: -0.03em;
-  }
-  .brand-mark {
-    width: 30px;
-    height: 30px;
-    display: grid;
-    place-items: center;
-    border-radius: 9px;
-    background: var(--ink);
-    color: #fff;
-    font-size: 0.82rem;
-    font-weight: 700;
   }
   nav {
     display: flex;
