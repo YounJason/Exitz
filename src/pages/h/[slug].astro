@@ -1,11 +1,11 @@
 ---
 //@ts-ignore
-import { getCollection } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
 
 export async function getStaticPaths() {
-  const privacyPosts = await getCollection('privacy');
-  return privacyPosts.map((post: { slug: any; }) => ({
+  const privacyPosts = await getCollection("privacy");
+  return privacyPosts.map((post: { slug: any }) => ({
     params: { slug: post.slug },
     props: { post },
   }));
@@ -24,7 +24,9 @@ const { Content } = await post.render();
     <article class="article-content">
       <h1>{post.data.title}</h1>
       <div class="article-meta">
-        <span>최근 업데이트: {post.data.pubDate.toISOString().slice(0, 10)}</span>
+        <span
+          >최근 업데이트: {post.data.pubDate.toISOString().slice(0, 10)}</span
+        >
       </div>
 
       <hr class="divider" />
@@ -37,12 +39,41 @@ const { Content } = await post.render();
 </Layout>
 
 <style>
-  .article-container { padding-top: 32px; padding-bottom: 60px; }
-  .breadcrumb { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 24px; }
-  .breadcrumb a { color: var(--google-blue); text-decoration: none; }
-  .article-content h1 { font-size: 2rem; font-weight: 500; margin-bottom: 12px; }
-  .article-meta { font-size: 0.9rem; color: var(--text-secondary); }
-  .divider { border: none; border-top: 1px solid var(--border-color); margin: 24px 0; }
-  .markdown-body :global(h2) { font-size: 1.4rem; font-weight: 500; margin-top: 32px; margin-bottom: 16px; }
-  .markdown-body :global(p) { margin-bottom: 16px; color: #3c4043; }
+  .article-container {
+    padding-top: 32px;
+    padding-bottom: 60px;
+  }
+  .breadcrumb {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+  }
+  .breadcrumb a {
+    color: var(--google-blue);
+    text-decoration: none;
+  }
+  .article-content h1 {
+    font-size: 2rem;
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+  .article-meta {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 24px 0;
+  }
+  .markdown-body :global(h2) {
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-top: 32px;
+    margin-bottom: 16px;
+  }
+  .markdown-body :global(p) {
+    margin-bottom: 16px;
+    color: #3c4043;
+  }
 </style>

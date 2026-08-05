@@ -1,7 +1,10 @@
 ---
-interface Props { title: string; }
+interface Props {
+  title: string;
+}
 const { title } = Astro.props;
 ---
+
 <!doctype html>
 <html lang="ko">
   <head>
@@ -11,18 +14,138 @@ const { title } = Astro.props;
     <title>{title} · Exitz</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <header class="site-header"><div class="header-inner">
-      <a href="/" class="brand" aria-label="Exitz 홈"><span class="brand-mark">E</span><span>Exitz</span></a>
-      <nav aria-label="주요 메뉴"><a href="/">탈퇴 가이드</a></nav>
-    </div></header>
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="/" class="brand" aria-label="Exitz 홈"
+          ><span class="brand-mark">E</span><span>Exitz</span></a
+        >
+        <nav aria-label="주요 메뉴"><a href="/">탈퇴 가이드</a></nav>
+      </div>
+    </header>
     <main><slot /></main>
-    <footer class="site-footer"><div class="footer-inner"><span>© 2026 Exitz</span><span>회원 탈퇴도 쉬워야 하니까.</span></div></footer>
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <span>© 2026 Exitz</span><span>회원 탈퇴도 쉬워야 하니까.</span>
+      </div>
+    </footer>
   </body>
 </html>
 <style is:global>
-:root{--ink:#171717;--muted:#77746d;--line:#e5e3dc;--surface:#fff;--canvas:#f7f7f5;--soft:#eceae4;--danger:#c94335}
-*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font-family:"DM Sans","Noto Sans KR",sans-serif;color:var(--ink);background:var(--canvas);line-height:1.6;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}main{flex:1}a{color:inherit}button,input{font:inherit}.site-header{background:rgba(247,247,245,.88);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10;backdrop-filter:blur(14px)}.header-inner,.footer-inner{width:min(1080px,calc(100% - 40px));margin:0 auto}.header-inner{height:68px;display:flex;align-items:center;justify-content:space-between}.brand{display:inline-flex;align-items:center;gap:9px;font-size:1.08rem;font-weight:700;text-decoration:none;letter-spacing:-.03em}.brand-mark{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:var(--ink);color:#fff;font-size:.82rem;font-weight:700}nav a{color:var(--muted);text-decoration:none;font-size:.9rem}nav a:hover{color:var(--ink)}.site-footer{border-top:1px solid var(--line);margin-top:72px}.footer-inner{min-height:76px;display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:.8rem}@media(max-width:600px){.header-inner,.footer-inner{width:min(100% - 28px,1080px)}.header-inner{height:60px}.footer-inner{gap:8px;align-items:flex-start;justify-content:center;flex-direction:column}}
+  :root {
+    --ink: #171717;
+    --muted: #77746d;
+    --line: #e5e3dc;
+    --surface: #fff;
+    --canvas: #f7f7f5;
+    --soft: #eceae4;
+    --danger: #c94335;
+  }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    font-family: "DM Sans", "Noto Sans KR", sans-serif;
+    color: var(--ink);
+    background: var(--canvas);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+  }
+  main {
+    flex: 1;
+  }
+  a {
+    color: inherit;
+  }
+  button,
+  input {
+    font: inherit;
+  }
+  .site-header {
+    background: rgba(247, 247, 245, 0.88);
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(14px);
+  }
+  .header-inner,
+  .footer-inner {
+    width: min(1080px, calc(100% - 40px));
+    margin: 0 auto;
+  }
+  .header-inner {
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 1.08rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: -0.03em;
+  }
+  .brand-mark {
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 9px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  nav a:hover {
+    color: var(--ink);
+  }
+  .site-footer {
+    border-top: 1px solid var(--line);
+    margin-top: 72px;
+  }
+  .footer-inner {
+    min-height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+  @media (max-width: 600px) {
+    .header-inner,
+    .footer-inner {
+      width: min(100% - 28px, 1080px);
+    }
+    .header-inner {
+      height: 60px;
+    }
+    .footer-inner {
+      gap: 8px;
+      align-items: flex-start;
+      justify-content: center;
+      flex-direction: column;
+    }
+  }
 </style>
