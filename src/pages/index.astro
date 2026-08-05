@@ -99,7 +99,7 @@ const privacySearchData = JSON.stringify(
           privacyPosts.slice(0, 4).map((post: any) => (
             <a href={`/help/${post.slug}`} class="tip-card">
               <div class="tip-content">
-                <h4>{post.data.serviceName}</h4>
+                <h4>{post.data.title}</h4>
                 <p>{post.data.description}</p>
               </div>
               <span class="card-arrow" aria-hidden="true">↗</span>

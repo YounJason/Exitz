@@ -29,6 +29,7 @@ const { Content } = await post.render();
         <div>
           <h1>{post.data.title}</h1>
           <div class="article-meta">
+            {post.data.description && <p class="description">{post.data.description}</p>}
             <span>최근 업데이트: {post.data.pubDate.toISOString().slice(0, 10)}</span>
           </div>
         </div>

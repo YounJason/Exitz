@@ -17,7 +17,7 @@ const posts: CollectionEntry<"help">[] = await getCollection("help");
                 posts.map((post) => (
                     <a class="tip-card" href={`/help/${post.slug}`}>
                         <div class="tip-content">
-                            <h2>{post.data.serviceName}</h2>
+                            <h2>{post.data.title}</h2>
                             <p>{post.data.description}</p>
                         </div>
                         <span class="card-arrow" aria-hidden="true">↗</span>
