@@ -21,7 +21,7 @@ const privacySearchData = JSON.stringify(
 ---
 
 <Layout title="Exitz" indexTitle>
-    <section class="hero">
+  <section class="hero">
     <div class="hero-inner">
       <p class="eyebrow">ACCOUNT EXIT GUIDE</p>
       <h1>
@@ -50,18 +50,9 @@ const privacySearchData = JSON.stringify(
 
   <section class="content">
     <div class="section-head">
-      <div>
-        <p class="eyebrow">EXPLORE</p>
-        <h2>필요한 정보를 골라보세요.</h2>
-      </div>
+      <h2>계정 탈퇴 가이드</h2>
     </div>
-
     <section class="guide-section main-guide-section">
-      <div class="section-label">
-        <div>
-          <h2>계정 탈퇴 가이드</h2>
-        </div>
-      </div>
       <div class="guide-grid">
         {
           exitPosts.slice(0, 6).map((post: any) => (
@@ -78,7 +69,9 @@ const privacySearchData = JSON.stringify(
                 <h4>{post.data.serviceName}</h4>
                 <span class="domain">{post.data.domain}</span>
               </div>
-              <span class="card-arrow" aria-hidden="true">↗</span>
+              <span class="card-arrow" aria-hidden="true">
+                ↗
+              </span>
             </a>
           ))
         }
@@ -88,12 +81,10 @@ const privacySearchData = JSON.stringify(
       </div>
     </section>
 
+    <div class="section-head">
+      <h2>개인정보 도움말</h2>
+    </div>
     <section class="guide-section tips-section">
-      <div class="section-label">
-        <div>
-          <h2>개인정보 도움말</h2>
-        </div>
-      </div>
       <div class="tips-list">
         {
           privacyPosts.slice(0, 4).map((post: any) => (
@@ -102,7 +93,9 @@ const privacySearchData = JSON.stringify(
                 <h4>{post.data.title}</h4>
                 <p>{post.data.description}</p>
               </div>
-              <span class="card-arrow" aria-hidden="true">↗</span>
+              <span class="card-arrow" aria-hidden="true">
+                ↗
+              </span>
             </a>
           ))
         }
@@ -246,9 +239,8 @@ const privacySearchData = JSON.stringify(
 
 <style>
   .hero {
-    border-bottom: 1px solid var(--line);
     background: radial-gradient(circle at 50% 15%, #fff 0, transparent 45%);
-    padding: 92px 20px 84px;
+    padding: 96px 20px;
   }
   .hero-inner {
     width: min(720px, 100%);
@@ -336,7 +328,9 @@ const privacySearchData = JSON.stringify(
     padding: 72px 0 60px;
   }
   .section-head {
-    margin-bottom: 48px;
+    margin-bottom: 24px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
   }
   .section-head .eyebrow {
     margin-bottom: 6px;
@@ -480,7 +474,9 @@ const privacySearchData = JSON.stringify(
     transform: translateY(-50%);
     color: #b0adad;
     font-size: 1.15rem;
-    transition: transform 0.25s ease, color 0.25s ease;
+    transition:
+      transform 0.25s ease,
+      color 0.25s ease;
   }
   .tip-card .card-arrow {
     top: 24px;
@@ -530,7 +526,7 @@ const privacySearchData = JSON.stringify(
   }
   .feature-card {
     width: min(1080px, 100%);
-    margin: 100px auto 200px;
+    margin: 0 auto 200px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -579,7 +575,9 @@ const privacySearchData = JSON.stringify(
     background: #ffffff;
     border-radius: 28px;
     padding: 32px 28px;
-    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.02);
+    box-shadow:
+      0 24px 48px rgba(0, 0, 0, 0.06),
+      0 4px 12px rgba(0, 0, 0, 0.02);
     border: 1px solid rgba(0, 0, 0, 0.04);
   }
   .preview-card.align-center {
@@ -597,9 +595,15 @@ const privacySearchData = JSON.stringify(
     height: 10px;
     border-radius: 50%;
   }
-  .mockup-dot.red { background: #ff5f56; }
-  .mockup-dot.yellow { background: #ffbd2e; }
-  .mockup-dot.green { background: #27c93f; }
+  .mockup-dot.red {
+    background: #ff5f56;
+  }
+  .mockup-dot.yellow {
+    background: #ffbd2e;
+  }
+  .mockup-dot.green {
+    background: #27c93f;
+  }
 
   .mockup-title {
     font-size: 1.3rem;
