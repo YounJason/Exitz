@@ -8,13 +8,15 @@ const privacyPosts = await getCollection("help");
 const domainMap = JSON.stringify(
   exitPosts.map((post: any) => ({
     domain: post.data.domain.toLowerCase(),
+    serviceName: post.data.serviceName,
+    logo: post.data.logo || null,
     slug: post.slug,
   })),
 );
 
 const privacySearchData = JSON.stringify(
   privacyPosts.map((post: any) => ({
-    title: post.data.title.toLowerCase(),
+    title: post.data.title,
     slug: post.slug,
   })),
 );
@@ -27,24 +29,31 @@ const privacySearchData = JSON.stringify(
       <h1>
         떠나는 것도,<br /><em>깔끔하게.</em>
       </h1>
-      <p class="intro">
-        서비스 이름이나 도메인을 검색하면<br />회원 탈퇴 방법을 바로 찾아드려요.
-      </p>
-      <form id="search-form" class="search-box">
-        <span class="search-icon" aria-hidden="true">⌕</span>
-        <input
-          id="search-input"
-          type="text"
-          placeholder=""
-          required
-          autocomplete="off"
-          aria-label="서비스 검색"
-        />
-        <button type="submit">찾기</button>
-      </form>
-      <p id="error-message" class="error" hidden>
-        해당 서비스를 아직 찾지 못했어요.
-      </p>
+      <p class="intro">서비스 이름이나 도메인을 검색하세요.</p>
+      <div class="search-wrapper">
+        <form id="search-form" class="search-box">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input
+            id="search-input"
+            type="text"
+            placeholder=""
+            required
+            autocomplete="off"
+            aria-label="서비스 검색"
+            aria-expanded="false"
+            aria-controls="search-suggestions"
+            role="combobox"
+          />
+          <button type="submit">찾기</button>
+        </form>
+        <div
+          id="search-suggestions"
+          class="suggestions-dropdown"
+          role="listbox"
+          hidden
+        >
+        </div>
+      </div>
     </div>
   </section>
 
@@ -107,20 +116,20 @@ const privacySearchData = JSON.stringify(
   </section>
 
   <section class="showcase-container">
-    <div class="feature-card">
+    <div class="feature-card js-scroll-trigger">
       <div class="feature-text-group">
-        <span class="feature-tag">계정 정리</span>
+        <span class="feature-tag">빠른 접근</span>
         <h3 class="feature-headline">
           더 이상 헤매지 마세요.<br />
           회원 탈퇴까지, <span>단 1분.</span>
         </h3>
         <p class="feature-description">
-          복잡한 설정과 깊숙한 메뉴 속에 숨겨진 회원 탈퇴 버튼.<br />
-          걱정 마세요, Exitz가 안내해 드릴게요.
+          복잡한 설정 메뉴 깊숙이 숨은 회원 탈퇴 버튼.<br />
+          걱정 마세요, Exitz가 직행 경로를 직접 안내해 드립니다.
         </p>
       </div>
       <div class="feature-visual-group">
-        <div class="preview-card">
+        <div class="preview-card mockup-fade-in">
           <div class="mockup-header">
             <span class="mockup-dot red"></span>
             <span class="mockup-dot yellow"></span>
@@ -128,32 +137,106 @@ const privacySearchData = JSON.stringify(
           </div>
           <div class="mockup-body">
             <h4 class="mockup-title">정말 탈퇴하시겠어요?</h4>
-            <div class="mockup-btn">네, 탈퇴할래요</div>
+            <p class="mockup-subtext">모든 계정 및 이용 기록이 삭제됩니다.</p>
+            <div class="mockup-btn danger">네, 바로 탈퇴할래요</div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="feature-card reverse">
+    <div class="feature-card reverse js-scroll-trigger">
       <div class="feature-text-group">
-        <span class="feature-tag">개인정보 보호</span>
+        <span class="feature-tag">스마트 검색</span>
         <h3 class="feature-headline">
-          방치된 휴면 계정,<br />
-          <span>이제 정리하세요.</span>
+          도메인 하나로<br />
+          <span>원하는 가이드</span>가 짠.
         </h3>
         <p class="feature-description">
-          쓰지 않는 계정에 남아있는 개인정보는 유출 위험의 주원인입니다.<br />
-          스마트한 디지털 다이어트로 내 명의를 안전하게 지키세요.
+          서비스명이나 URL을 입력해 보세요.<br />
+          검색 한 번으로 탈퇴 가이드부터 개인정보 팁까지 연결됩니다.
         </p>
       </div>
       <div class="feature-visual-group">
-        <div class="preview-card align-center">
-          <div class="mockup-icon-wrapper blue">
-            <span class="icon-emoji">🛡️</span>
+        <div class="preview-card mockup-search-card mockup-fade-in">
+          <div class="mockup-search-bar">
+            <span class="mockup-search-icon">⌕</span>
+            <span class="mockup-search-text">instagram.com</span>
           </div>
-          <div class="mockup-score">
-            <span>방치된 계정 0개</span>
-            <small class="status-good">안전함</small>
+          <div class="mockup-result-list">
+            <div class="mockup-result-item active">
+              <div class="mockup-result-info">
+                <strong>인스타그램</strong>
+                <span>instagram.com</span>
+              </div>
+            </div>
+            <div class="mockup-result-item">
+              <div class="mockup-result-info">
+                <strong>스포티파이</strong>
+                <span>spotify.com</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-card js-scroll-trigger">
+      <div class="feature-text-group">
+        <span class="feature-tag">개인정보 보호</span>
+        <h3 class="feature-headline">
+          잊고 있던 계정 정리,<br />
+          <span>보안의 기본</span>입니다.
+        </h3>
+        <p class="feature-description">
+          수년간 안 쓰는 휴면 계정은 개인정보 유출의 표적이 됩니다.<br />
+          더 이상 쓰지 않는 플랫폼의 계정을 깔끔하게 정리하세요.
+        </p>
+      </div>
+      <div class="feature-visual-group">
+        <div class="preview-card mockup-toggle-card mockup-fade-in">
+          <div class="mockup-toggle-item">
+            <span>마케팅 수신 동의</span>
+            <div class="mockup-switch active"></div>
+          </div>
+          <div class="mockup-toggle-item">
+            <span>개인정보 제3자 제공 동의</span>
+            <div class="mockup-switch active"></div>
+          </div>
+          <div class="mockup-toggle-item">
+            <span>개인정보 수집 및 이용 동의</span>
+            <div class="mockup-switch active"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-card reverse js-scroll-trigger">
+      <div class="feature-text-group">
+        <span class="feature-tag">친절한 설명</span>
+        <h3 class="feature-headline">
+          막힘없는 스텝별 진행,<br />
+          <span>누구나 쉽게.</span>
+        </h3>
+        <p class="feature-description">
+          복잡하고 아리송한 인증 프로세스나 탈퇴 동의서도<br />
+          스텝 바이 스텝 이미지 안내로 쉽게 따라할 수 있습니다.
+        </p>
+      </div>
+      <div class="feature-visual-group">
+        <div class="preview-card mockup-step-card mockup-fade-in">
+          <div class="mockup-step item-done">
+            <div class="step-num">1</div>
+            <div class="step-text">설정 > 보안 메뉴 이동</div>
+            <span class="step-check">✓</span>
+          </div>
+          <div class="mockup-step item-active">
+            <div class="step-num">2</div>
+            <div class="step-text">계정 삭제 및 탈퇴 신청</div>
+            <span class="step-badge">진행중</span>
+          </div>
+          <div class="mockup-step">
+            <div class="step-num">3</div>
+            <div class="step-text">탈퇴 완료 및 데이터 파기</div>
           </div>
         </div>
       </div>
@@ -176,39 +259,250 @@ const privacySearchData = JSON.stringify(
   const privacyData = JSON.parse(privacySearchJson);
   const form = document.getElementById("search-form");
   const input = document.getElementById("search-input");
-  const errorMsg = document.getElementById("error-message");
+  const suggestionsBox = document.getElementById("search-suggestions");
+
+  const CHOSUNG = [
+    "ㄱ", "ㄲ", "ㄴ", "ㄷ", "ㄸ", "ㄹ", "ㅁ", "ㅂ", "ㅃ", "ㅅ", "ㅆ",
+    "ㅇ", "ㅈ", "ㅉ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"
+  ];
+  const JUNGSUNG = [
+    "ㅏ", "ㅐ", "ㅑ", "ㅒ", "ㅓ", "ㅔ", "ㅕ", "ㅖ", "ㅗ", "ㅘ", "ㅙ",
+    "ㅚ", "ㅛ", "ㅜ", "ㅝ", "ㅞ", "ㅟ", "ㅠ", "ㅡ", "ㅢ", "ㅣ"
+  ];
+  const JONGSUNG = [
+    "", "ㄱ", "ㄲ", "ㄳ", "ㄴ", "ㄵ", "ㄶ", "ㄷ", "ㄹ", "ㄺ", "ㄻ", "ㄼ",
+    "ㄽ", "ㄾ", "ㄿ", "ㅀ", "ㅁ", "ㅂ", "ㅄ", "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅊ",
+    "ㅋ", "ㅌ", "ㅍ", "ㅎ"
+  ];
+  const JONG_EXPAND = {
+    "ㄳ": "ㄱㅅ", "ㄵ": "ㄴㅈ", "ㄶ": "ㄴㅎ", "ㄺ": "ㄹㄱ",
+    "ㄻ": "ㄹㅁ", "ㄼ": "ㄹㅂ", "ㄽ": "ㄹㅅ", "ㄾ": "ㄹㅌ",
+    "ㄿ": "ㄹㅍ", "ㅀ": "ㄹㅎ", "ㅄ": "ㅂㅅ"
+  };
+
+  function decomposeHangul(str) {
+    let result = "";
+    for (let i = 0; i < str.length; i++) {
+      const code = str.charCodeAt(i);
+      if (code >= 0xac00 && code <= 0xd7a3) {
+        const index = code - 0xac00;
+        const jong = index % 28;
+        const jung = Math.floor((index - jong) / 28) % 21;
+        const cho = Math.floor((index - jong) / 28 / 21);
+
+        result += CHOSUNG[cho] + JUNGSUNG[jung];
+        if (jong > 0) {
+          const jChar = JONGSUNG[jong];
+          result += JONG_EXPAND[jChar] || jChar;
+        }
+      } else {
+        result += str[i];
+      }
+    }
+    return result.toLowerCase();
+  }
+
+  function getChosung(str) {
+    let result = "";
+    for (let i = 0; i < str.length; i++) {
+      const code = str.charCodeAt(i);
+      if (code >= 0xac00 && code <= 0xd7a3) {
+        const index = code - 0xac00;
+        const cho = Math.floor((index - (index % 28)) / 28 / 21);
+        result += CHOSUNG[cho];
+      } else {
+        result += str[i];
+      }
+    }
+    return result.toLowerCase();
+  }
+
+  function isOnlyChosung(str) {
+    return str.split("").every((char) => CHOSUNG.includes(char) || char === " ");
+  }
+
+  function matchKorean(target, query) {
+    if (!target || !query) return false;
+    const cleanTarget = target.trim().toLowerCase();
+    const cleanQuery = query.trim().toLowerCase();
+
+    if (cleanTarget.includes(cleanQuery)) return true;
+
+    const decTarget = decomposeHangul(cleanTarget);
+    const decQuery = decomposeHangul(cleanQuery);
+    if (decTarget.includes(decQuery)) return true;
+
+    if (isOnlyChosung(cleanQuery)) {
+      const choTarget = getChosung(cleanTarget);
+      if (choTarget.includes(cleanQuery)) return true;
+    }
+
+    return false;
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function getSuggestions(rawQuery) {
+    const query = rawQuery.trim();
+    if (!query) return [];
+
+    const exitMatches = domainData
+      .filter(
+        (x) =>
+          matchKorean(x.domain, query) ||
+          matchKorean(x.serviceName, query),
+      )
+      .map((x) => ({
+        type: "exit",
+        title: x.serviceName,
+        sub: x.domain,
+        slug: x.slug,
+        logo: x.logo,
+      }));
+
+    const helpMatches = privacyData
+      .filter((x) => matchKorean(x.title, query))
+      .map((x) => ({
+        type: "help",
+        title: x.title,
+        sub: "",
+        slug: x.slug,
+        logo: null,
+      }));
+
+    return [...exitMatches, ...helpMatches].slice(0, 6);
+  }
+
+  const wrapper = document.querySelector(".search-wrapper");
+
+  let currentItems = [];
+  let activeIndex = -1;
+
+  function setActive(index) {
+    activeIndex = index;
+    currentItems.forEach((el, i) => {
+      el.classList.toggle("active", i === activeIndex);
+    });
+    if (activeIndex >= 0 && currentItems[activeIndex]) {
+      currentItems[activeIndex].scrollIntoView({ block: "nearest" });
+    }
+  }
+
+  function hideSuggestions() {
+    suggestionsBox.hidden = true;
+    currentItems = [];
+    activeIndex = -1;
+    input.setAttribute("aria-expanded", "false");
+  }
+
+  function renderSuggestions(rawQuery) {
+    const trimmed = rawQuery.trim();
+    if (!trimmed) {
+      hideSuggestions();
+      return;
+    }
+
+    const matches = getSuggestions(trimmed);
+
+    if (!matches.length) {
+      suggestionsBox.innerHTML = `<p class="suggestions-empty">"${escapeHtml(trimmed)}"에 대한 결과가 없어요.</p>`;
+      currentItems = [];
+      activeIndex = -1;
+      suggestionsBox.hidden = false;
+      input.setAttribute("aria-expanded", "true");
+      return;
+    }
+
+    suggestionsBox.innerHTML = matches
+      .map((m, i) => {
+        const href = m.type === "exit" ? `/exit/${m.slug}` : `/help/${m.slug}`;
+        const logo = m.logo
+          ? `<img class="suggestion-logo" src="${escapeHtml(m.logo)}" alt="" loading="lazy" />`
+          : `<span class="suggestion-logo suggestion-logo--placeholder">${escapeHtml(m.title.charAt(0))}</span>`;
+        const badge =
+          m.type === "exit"
+            ? `<span class="suggestion-arrow" aria-hidden="true">↗</span>`
+            : `<span class="suggestion-badge">도움말 ↗</span>`;
+        return `
+          <a href="${href}" class="suggestion-item" role="option" data-index="${i}">
+            ${logo}
+            <span class="suggestion-info">
+              <strong>${escapeHtml(m.title)}</strong>
+              ${m.sub ? `<span>${escapeHtml(m.sub)}</span>` : ""}
+            </span>
+            ${badge}
+          </a>
+        `;
+      })
+      .join("");
+
+    currentItems = Array.from(
+      suggestionsBox.querySelectorAll(".suggestion-item"),
+    );
+    suggestionsBox.hidden = false;
+    input.setAttribute("aria-expanded", "true");
+    setActive(0);
+
+    currentItems.forEach((el) => {
+      el.addEventListener("mouseenter", () => {
+        setActive(Number(el.dataset.index));
+      });
+    });
+  }
+
+  input?.addEventListener("input", () => {
+    renderSuggestions(input.value);
+  });
+
+  input?.addEventListener("focus", () => {
+    if (input.value.trim()) {
+      renderSuggestions(input.value);
+    }
+  });
+
+  input?.addEventListener("keydown", (e) => {
+    if (suggestionsBox.hidden) return;
+    if (e.key === "Escape") {
+      hideSuggestions();
+      return;
+    }
+    if (!currentItems.length) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActive(Math.min(activeIndex + 1, currentItems.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActive(Math.max(activeIndex - 1, 0));
+    }
+  });
+
+  wrapper?.addEventListener("focusout", (e) => {
+    if (!wrapper.contains(e.relatedTarget)) {
+      hideSuggestions();
+    }
+  });
 
   form?.addEventListener("submit", (e) => {
     e.preventDefault();
-    errorMsg.hidden = true;
-    const query = input.value.trim().toLowerCase();
-    const domain = query
-      .replace(/^https?:\/\//, "")
-      .replace(/^www\./, "")
-      .split("/")[0];
-    const exit = domainData.find((x) => x.domain === domain);
-    if (exit) {
-      location.href = `/exit/${exit.slug}`;
+
+    if (activeIndex >= 0 && currentItems[activeIndex]) {
+      location.href = currentItems[activeIndex].getAttribute("href");
       return;
     }
-    const help = privacyData.find((x) => x.title.includes(query));
-    if (help) {
-      location.href = `/help/${help.slug}`;
-      return;
-    }
-    errorMsg.hidden = false;
   });
 
-  const placeholderTexts = [
-    "facebook.com",
-    "instagram.com",
-    "twitter.com",
-    "youtube.com",
-  ];
+  const placeholderTexts = domainData.map((x) => x.domain);
   let currentIndex = 0;
 
   function typePlaceholder() {
     const text = placeholderTexts[currentIndex];
+    if (!text) return;
     let charIndex = 0;
     input.placeholder = "";
     const typingInterval = setInterval(() => {
@@ -235,12 +529,32 @@ const privacySearchData = JSON.stringify(
   }
 
   typePlaceholder();
+
+  const observerOptions = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 0.15,
+  };
+
+  const observerCallback = (entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("in-view");
+        observer.unobserve(entry.target);
+      }
+    });
+  };
+
+  const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+  const targets = document.querySelectorAll(".js-scroll-trigger");
+  targets.forEach((target) => observer.observe(target));
 </script>
 
 <style>
   .hero {
     background: radial-gradient(circle at 50% 15%, #fff 0, transparent 45%);
-    padding: 96px 20px;
+    padding: 128px 20px;
   }
   .hero-inner {
     width: min(720px, 100%);
@@ -316,10 +630,109 @@ const privacySearchData = JSON.stringify(
   .search-box button:hover {
     background: #333;
   }
-  .error {
-    margin-top: 12px;
-    color: var(--danger);
-    font-size: 0.86rem;
+  .search-wrapper {
+    position: relative;
+  }
+  .suggestions-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: var(--surface, #fff);
+    border: 1px solid var(--line, #eee);
+    border-radius: 18px;
+    box-shadow: 0 16px 40px rgba(23, 23, 23, 0.12);
+    padding: 8px;
+    max-height: 340px;
+    overflow-y: auto;
+    text-align: left;
+    z-index: 20;
+  }
+  .suggestions-dropdown[hidden] {
+    display: none !important;
+  }
+  :global(.suggestion-item) {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 14px;
+    border-radius: 13px;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: all 0.15s ease;
+  }
+  :global(.suggestion-item:hover),
+  :global(.suggestion-item.active) {
+    background: #f0f7ff;
+    border-color: #3182f6;
+  }
+  :global(.suggestion-logo) {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    object-fit: contain;
+    border-radius: 11px;
+    background: #fff;
+    border: 1px solid var(--line, #eee);
+    padding: 6px;
+  }
+  :global(.suggestion-logo--placeholder) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f4f5f7;
+    border: none;
+    padding: 0;
+    color: var(--muted);
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+  :global(.suggestion-info) {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  :global(.suggestion-info strong) {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  :global(.suggestion-info span) {
+    margin-top: 2px;
+    font-size: 0.82rem;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  :global(.suggestion-badge) {
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #3182f6;
+    background: rgba(49, 130, 246, 0.1);
+    padding: 5px 10px;
+    border-radius: 8px;
+  }
+  :global(.suggestion-arrow) {
+    flex-shrink: 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+  :global(.suggestions-empty) {
+    margin: 0;
+    padding: 20px 14px;
+    color: var(--muted);
+    font-size: 0.88rem;
+    text-align: center;
   }
 
   .content {
@@ -332,9 +745,6 @@ const privacySearchData = JSON.stringify(
     padding-bottom: 8px;
     border-bottom: 1px solid var(--line);
   }
-  .section-head .eyebrow {
-    margin-bottom: 6px;
-  }
   .section-head h2 {
     font-size: 1.9rem;
     letter-spacing: -0.04em;
@@ -343,25 +753,6 @@ const privacySearchData = JSON.stringify(
 
   .guide-section {
     margin-bottom: 88px;
-  }
-  .section-label {
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--line);
-    margin-bottom: 28px;
-  }
-  .section-label h3 {
-    font-size: 1.25rem;
-    letter-spacing: -0.02em;
-    font-weight: 700;
-  }
-  .section-label p {
-    font-size: 0.84rem;
-    color: var(--muted);
-    margin-top: 3px;
-  }
-
-  .main-guide-section .section-label h3 {
-    font-size: 1.4rem;
   }
   .guide-grid {
     display: grid;
@@ -381,11 +772,6 @@ const privacySearchData = JSON.stringify(
     border-radius: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .guide-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--ink);
-    box-shadow: 0 16px 32px -10px rgba(0, 0, 0, 0.1);
   }
   .service-logo {
     width: 58px;
@@ -442,11 +828,6 @@ const privacySearchData = JSON.stringify(
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .tip-card:hover {
-    border-color: #c2bebd;
-    transform: translateY(-3px);
-    box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.07);
-  }
   .tip-content {
     min-width: 0;
   }
@@ -483,15 +864,6 @@ const privacySearchData = JSON.stringify(
     right: 20px;
     transform: none;
   }
-  .guide-card:hover .card-arrow {
-    color: var(--ink);
-    transform: translate(3px, calc(-50% - 3px));
-  }
-  .tip-card:hover .card-arrow {
-    color: var(--ink);
-    transform: translate(3px, -3px);
-  }
-
   .more-link-wrapper {
     display: flex;
     justify-content: center;
@@ -518,27 +890,51 @@ const privacySearchData = JSON.stringify(
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
   }
-
   .showcase-container {
     background: var(--canvas);
     padding: 120px 20px;
     margin-top: 80px;
+    overflow: hidden;
   }
   .feature-card {
     width: min(1080px, 100%);
-    margin: 0 auto 200px;
+    margin: 0 auto 140px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 60px;
   }
+  .feature-card:last-child {
+    margin-bottom: 0;
+  }
   .feature-card.reverse {
     flex-direction: row-reverse;
   }
+
   .feature-text-group {
     flex: 1;
     max-width: 520px;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: 0.1s;
   }
+
+  .feature-visual-group {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(60px);
+    transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .feature-card.in-view .feature-text-group,
+  .feature-card.in-view .feature-visual-group {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   .feature-tag {
     display: inline-block;
     font-size: 0.9rem;
@@ -564,11 +960,6 @@ const privacySearchData = JSON.stringify(
     letter-spacing: -0.02em;
   }
 
-  .feature-visual-group {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-  }
   .preview-card {
     width: 100%;
     max-width: 380px;
@@ -579,12 +970,10 @@ const privacySearchData = JSON.stringify(
       0 24px 48px rgba(0, 0, 0, 0.06),
       0 4px 12px rgba(0, 0, 0, 0.02);
     border: 1px solid rgba(0, 0, 0, 0.04);
+    transition:
+      box-shadow 0.3s ease,
+      transform 0.3s ease;
   }
-  .preview-card.align-center {
-    text-align: center;
-    padding: 40px 28px;
-  }
-
   .mockup-header {
     display: flex;
     gap: 6px;
@@ -609,52 +998,196 @@ const privacySearchData = JSON.stringify(
     font-size: 1.3rem;
     font-weight: 700;
     color: #191f28;
+    margin-bottom: 8px;
+  }
+  .mockup-subtext {
+    font-size: 0.85rem;
+    color: #8b95a1;
     margin-bottom: 24px;
   }
-  .mockup-btn {
+  .mockup-btn.danger {
     width: 100%;
     padding: 16px;
-    background: #3182f6;
+    background: #ff4d4f;
     color: #ffffff;
     font-size: 0.95rem;
     font-weight: 700;
     border-radius: 14px;
     text-align: center;
-    box-shadow: 0 8px 18px rgba(49, 130, 246, 0.25);
+    box-shadow: 0 8px 18px rgba(255, 77, 79, 0.25);
+    transition:
+      background 0.2s ease,
+      transform 0.1s ease;
+    cursor: pointer;
   }
-
-  .mockup-icon-wrapper {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 64px;
-    height: 64px;
-    background: #e8f3ff;
-    border-radius: 20px;
-    margin-bottom: 16px;
-  }
-  .icon-emoji {
-    font-size: 1.8rem;
-  }
-  .mockup-score {
+  .mockup-search-bar {
     display: flex;
     align-items: center;
-    justify-content: center;
+    background: #f4f5f7;
+    padding: 12px 16px;
+    border-radius: 14px;
     gap: 10px;
-    background: #f2f4f6;
-    padding: 12px 18px;
-    border-radius: 12px;
+    margin-bottom: 16px;
+    border: 1px solid transparent;
+    transition: border-color 0.2s ease;
+  }
+  .mockup-search-icon {
+    color: #8b95a1;
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+  .mockup-search-text {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #191f28;
+  }
+  .mockup-result-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .mockup-result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: #f9fafb;
+    border: 1px solid #f0f0f0;
+    transition: all 0.2s ease;
+  }
+  .mockup-result-item.active {
+    background: #f0f7ff;
+    border-color: #3182f6;
+    box-shadow: 0 4px 12px rgba(49, 130, 246, 0.08);
+  }
+  .mockup-result-info {
+    display: flex;
+    flex-direction: column;
+  }
+  .mockup-result-info strong {
+    font-size: 0.95rem;
+    color: #191f28;
+  }
+  .mockup-result-info span {
+    font-size: 0.78rem;
+    color: #8b95a1;
+  }
+  .mockup-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #3182f6;
+    background: rgba(49, 130, 246, 0.1);
+    padding: 4px 10px;
+    border-radius: 8px;
+  }
+
+  .mockup-toggle-card {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .mockup-toggle-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     font-size: 0.95rem;
     font-weight: 600;
     color: #333d4b;
+    padding: 4px 0;
   }
-  .status-good {
-    color: #20c997;
-    font-size: 0.8rem;
+  .mockup-switch {
+    width: 46px;
+    height: 26px;
+    background: #e5e8eb;
+    border-radius: 20px;
+    position: relative;
+    transition: background 0.25s 심플;
+    cursor: pointer;
+  }
+  .mockup-switch::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .mockup-switch.active {
+    background: #3182f6;
+  }
+  .mockup-switch.active::after {
+    transform: translateX(20px);
+  }
+  .mockup-step-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .mockup-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: #f9fafb;
+    font-size: 0.9rem;
+    color: #6b7684;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+  }
+  .step-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #e5e8eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
     font-weight: 700;
-    background: #e6fcf5;
+    color: #4e5968;
+    transition: all 0.2s ease;
+  }
+  .step-text {
+    flex: 1;
+    font-weight: 600;
+    transition: color 0.2s ease;
+  }
+  .mockup-step.item-done {
+    background: #f2fdf5;
+    color: #191f28;
+  }
+  .mockup-step.item-done .step-num {
+    background: #27c93f;
+    color: #fff;
+  }
+  .step-check {
+    color: #27c93f;
+    font-weight: bold;
+  }
+  .mockup-step.item-active {
+    background: #f0f7ff;
+    border: 1px solid rgba(49, 130, 246, 0.3);
+    color: #191f28;
+    box-shadow: 0 4px 10px rgba(49, 130, 246, 0.05);
+  }
+  .mockup-step.item-active .step-num {
+    background: #3182f6;
+    color: #fff;
+  }
+  .step-badge {
+    font-size: 0.72rem;
+    background: #3182f6;
+    color: #fff;
     padding: 3px 8px;
     border-radius: 6px;
+    font-weight: 700;
   }
 
   .brand-bottom-section {
