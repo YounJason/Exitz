@@ -3,7 +3,7 @@ title: "쿠팡 와우 멤버십 해지 및 환불 방법"
 serviceName: "쿠팡 와우 멤버십"
 domain: "loyalty.coupang.com"
 pubDate: 2026-08-05
-description: "쿠팡 와우 멤버십 해지 절차, 중도 해지 환불 규정, 쿠팡플레이 및 쿠팡이츠 혜택 소멸 안내입니다."
+description: "쿠팡 와우 멤버십 해지 절차, 중도 해지 환불 규정, 쿠팡플레이 및 쿠팡이츠 혜택 소멸 안내"
 logo: "/exit/coupang-wow_1.png"
 tabs:
   - id: "pc"
