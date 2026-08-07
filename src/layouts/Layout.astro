@@ -8,13 +8,25 @@ interface Props {
   type?: string;
 }
 
-const { title, indexTitle = false, description, image, url, type } = Astro.props;
+const {
+  title,
+  indexTitle = false,
+  description,
+  image,
+  url,
+  type,
+} = Astro.props;
+
 const siteUrl = Astro.site ? Astro.site.origin : "https://exitz.me";
 const pageTitle = indexTitle ? title : `${title} · Exitz`;
 const metaDescription = description ?? "떠나는 것도, 깔끔하게. Exitz.";
 const metaType = type ?? "website";
 const canonicalUrl = url ?? siteUrl;
-const metaImage = image ? (image.startsWith("http") ? image : `${siteUrl}${image}`) : undefined;
+const defaultImage = "/logo.svg";
+const targetImage = image ?? defaultImage;
+const metaImage = targetImage.startsWith("http")
+  ? targetImage
+  : new URL(targetImage, siteUrl).href;
 ---
 
 <!doctype html>
@@ -26,19 +38,20 @@ const metaImage = image ? (image.startsWith("http") ? image : `${siteUrl}${image
     <meta name="description" content={metaDescription} />
     <link rel="canonical" href={canonicalUrl} />
 
-    <!-- Open Graph -->
     <meta property="og:site_name" content="Exitz" />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={metaDescription} />
     <meta property="og:type" content={metaType} />
     <meta property="og:url" content={canonicalUrl} />
-    {metaImage && <meta property="og:image" content={metaImage} />}
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content={metaImage ? "summary_large_image" : "summary"} />
+    <meta property="og:image" content={metaImage} />
+    <meta name="twitter:image" content={metaImage} />
+    <meta
+      name="twitter:card"
+      content={metaImage ? "summary_large_image" : "summary"}
+    />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={metaDescription} />
-    {metaImage && <meta name="twitter:image" content={metaImage} />}
+
     <link rel="icon" href="/icon.svg" type="image/svg+xml" />
     <link rel="shortcut icon" href="/icon.svg" />
     <title>{indexTitle ? title : `${title} · Exitz`}</title>
@@ -48,14 +61,37 @@ const metaImage = image ? (image.startsWith("http") ? image : `${siteUrl}${image
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3817407804978670"
-     crossorigin="anonymous"></script>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3817407804978670"
+      crossorigin="anonymous"></script>
   </head>
   <body>
     <header class="site-header">
       <div class="header-inner">
         <a href="/" class="brand" aria-label="Exitz 홈">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="5 5 54 54" width="28" height="28" fill="none"><path d="M18 52V14a2 2 0 0 1 2-2h24a2 2 0 0 1 2 2" stroke="#191f28" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 52h40" stroke="#191f28" stroke-width="4" stroke-linecap="round"/><path d="M28 32h20m-6-7 7 7-7 7" stroke="#191f28" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="5 5 54 54"
+            width="28"
+            height="28"
+            fill="none"
+            ><path
+              d="M18 52V14a2 2 0 0 1 2-2h24a2 2 0 0 1 2 2"
+              stroke="#191f28"
+              stroke-width="4"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path><path
+              d="M12 52h40"
+              stroke="#191f28"
+              stroke-width="4"
+              stroke-linecap="round"></path><path
+              d="M28 32h20m-6-7 7 7-7 7"
+              stroke="#191f28"
+              stroke-width="4"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path></svg
+          >
           <span>Exitz</span>
         </a>
         <nav aria-label="메뉴">
