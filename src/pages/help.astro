@@ -20,12 +20,23 @@ const posts: CollectionEntry<"help">[] = await getCollection("help");
                             <h2>{post.data.title}</h2>
                             <p>{post.data.description}</p>
                         </div>
-                        <span class="card-arrow" aria-hidden="true">↗</span>
+                        <span class="card-arrow" aria-hidden="true">
+                            ↗
+                        </span>
                     </a>
                 ))
             }
         </div>
     </section>
+    <amp-ad
+        layout="fixed"
+        width="728"
+        height="90"
+        type="adsense"
+        data-ad-client="ca-pub-3817407804978670"
+        data-ad-slot="9741349521"
+    >
+    </amp-ad>
 </Layout>
 
 <style>
@@ -102,7 +113,9 @@ const posts: CollectionEntry<"help">[] = await getCollection("help");
         top: 24px;
         color: #b0adad;
         font-size: 1.15rem;
-        transition: transform 0.25s ease, color 0.25s ease;
+        transition:
+            transform 0.25s ease,
+            color 0.25s ease;
     }
     .tip-card:hover .card-arrow {
         color: var(--ink);
