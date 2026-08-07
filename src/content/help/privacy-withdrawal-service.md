@@ -42,25 +42,25 @@ pubDate: 2026-08-07
 
 ### STEP 01. 개인정보 수집·이용 동의
 개인정보 포털의 [`웹사이트 회원 탈퇴`](https://www.privacy.go.kr/front/wcp/dcl/per/memberSecStep1.do) 메뉴에 접속하여 본인확인 내역 조회를 위한 기본 약관 및 개인정보 수집·이용에 동의합니다.
-![웹사이트 회원 탈퇴 서비스 스크린샷](/help/privacy-withdrawal-service_2.png)
+![개인정보 동의 화면 스크린샷](/help/privacy-withdrawal-service_2.png)
 
 ### STEP 02. 본인확인 진행
 본인명의로 발급된 인증 수단을 선택해 본인인증을 진행합니다.
 - **인증 수단**: 휴대폰, 공동인증서, 아이핀, 신용카드, SNS 인증 등
 - 💡 **팁**: 본인확인 내역을 가장 넓게 조회하려면 **휴대폰 인증**을 사용하는 것을 권장합니다.
-![웹사이트 회원 탈퇴 서비스 스크린샷](/help/privacy-withdrawal-service_3.png)
+![본인인증 화면 스크린샷](/help/privacy-withdrawal-service_3.png)
 
 ### STEP 03. 본인확인 내역 조회 및 탈퇴 대상 선택
 인증이 완료되면 그동안 본인확인을 거쳤던 웹사이트 목록이 나타납니다.
 - **회원 탈퇴 가능 대상** 탭에서 더 이상 이용하지 않는 웹사이트를 선택하여 '회원탈퇴 신청' 목록에 추가합니다.
 - *참고*: 인증 내역에는 단순 본인인증만 진행하고 회원가입은 하지 않은 사이트도 포함되어 있을 수 있습니다.
-![웹사이트 회원 탈퇴 서비스 스크린샷](/help/privacy-withdrawal-service_4.png)
+![웹사이트 목록 화면 스크린샷](/help/privacy-withdrawal-service_4.png)
 
 
 ### STEP 04. 요구서 작성 (위임 동의 및 정보 입력)
 - 회원 탈퇴 처리를 위한 대행 위임에 동의합니다.
 - 처리 결과를 통보받을 **이메일 주소**와 **휴대전화번호**를 정확히 입력합니다.
-![웹사이트 회원 탈퇴 서비스 스크린샷](/help/privacy-withdrawal-service_5.png)
+![탈퇴 요구서 화면 스크린샷](/help/privacy-withdrawal-service_5.png)
 
 ### STEP 05. 서비스 신청 완료 및 처리 결과 확인
 - 최종 확인 후 신청서를 제출합니다.
