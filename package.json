@@ -1,0 +1,16 @@
+{
+  "name": "Exitz",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/netlify": "^6.0.0",
+    "astro": "^5.0.0",
+    "rehype-external-links": "^3.0.0"
+  }
+}
