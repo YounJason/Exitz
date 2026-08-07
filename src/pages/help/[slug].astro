@@ -7,9 +7,9 @@ interface Props {
 }
 
 export async function getStaticPaths() {
-  const posts = await getCollection("help");
-  return posts.map((post: { slug: any }) => ({
-    params: { slug: post.slug },
+  const helpPosts = await getCollection("help");
+  return helpPosts.map((post: CollectionEntry<"help">) => ({
+    params: { slug: post.slug ?? post.id },
     props: { post },
   }));
 }
