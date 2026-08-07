@@ -19,7 +19,7 @@ const {
 
 const siteUrl = Astro.site ? Astro.site.origin : "https://exitz.me";
 const pageTitle = indexTitle ? title : `${title} · Exitz`;
-const metaDescription = description ?? "떠나는 것도, 깔끔하게. Exitz.";
+const metaDescription = description ?? "떠나는 것도, 깔끔하게. Exitz";
 const metaType = type ?? "website";
 const canonicalUrl = url ?? siteUrl;
 const defaultImage = "/logo2.png";
@@ -103,7 +103,7 @@ const metaImage = targetImage.startsWith("http")
     <main><slot /></main>
     <footer class="site-footer">
       <div class="footer-inner">
-        <span>© 2026 Exitz</span><span>Exitz</span>
+        <span>© 2026 윤재선. All rights reserved.</span><span>떠나는 것도, 깔끔하게. Exitz</span>
       </div>
     </footer>
   </body>
