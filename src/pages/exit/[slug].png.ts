@@ -7,7 +7,7 @@ import { Resvg } from "@resvg/resvg-js";
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const exitPosts = await getCollection("exit");
-  return exitPosts.map((post) => ({
+  return exitPosts.map((post: typeof exitPosts[number]) => ({
     params: { slug: post.slug },
     props: { post },
   }));
@@ -117,8 +117,9 @@ export const GET: APIRoute = async ({ props }) => {
     fitTo: { mode: "width", value: 800 },
   });
   const pngBuffer = resvg.render().asPng();
+  const pngData = new Uint8Array(pngBuffer);
 
-  return new Response(pngBuffer, {
+  return new Response(pngData, {
     headers: {
       "Content-Type": "image/png",
       "Cache-Control": "public, max-age=31536000, immutable",
