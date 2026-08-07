@@ -21,7 +21,7 @@ async function getLocalImageDataUrl(relativePath: string): Promise<string | null
     const ext = path.extname(filePath).replace(".", "") || "png";
     return `data:image/${ext};base64,${buffer.toString("base64")}`;
   } catch (error) {
-    console.error(`이미지 로드 실패: ${relativePath}`, error);
+    console.error(`${relativePath} : `, error);
     return null;
   }
 }
@@ -47,11 +47,10 @@ export const GET: APIRoute = async ({ props }) => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          paddingTop: "36px", // 전체 레이아웃을 아래로 이동
+          paddingTop: "36px",
           gap: "8px",
         },
         children: [
-          // 1. 적절한 크기로 확대한 쿠팡 로고 카드 (160x160)
           {
             type: "div",
             props: {
@@ -83,7 +82,6 @@ export const GET: APIRoute = async ({ props }) => {
               ],
             },
           },
-          // 2. 메인 브랜딩 Exitz 로고 (180px)
           brandLogoUrl
             ? {
                 type: "img",
