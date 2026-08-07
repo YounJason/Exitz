@@ -3,7 +3,7 @@ title: "쿠팡 계정 회원 탈퇴 하는 방법"
 serviceName: "쿠팡"
 domain: "coupang.com"
 pubDate: 2026-08-07
-description: "쿠팡 계정 회원 탈퇴 절차, 와우 멤버십 해지, 캐시/캐시백 환불 신청 등 필수 체크리스트와 링크 안내입니다."
+description: "쿠팡 계정 회원 탈퇴 절차, 와우 멤버십 해지, 캐시/캐시백 환불 신청 등 필수 체크리스트와 링크 안내"
 logo: "/exit/coupang_1.png"
 tabs:
   - id: "pc"
