@@ -20,7 +20,7 @@ tabs:
         title: "'MY 정보' - '회원 탈퇴' 메뉴 선택"
         description: "마이 쿠팡 페이지 좌측 사이드바 하단의 'MY 정보' 카테고리를 찾으신 후, 해당 카테고리 내 '회원 탈퇴' 메뉴를 선택하세요."
         actionUrl: "https://login.coupang.com/login/secession.pang"
-        actionText: "쿠팡 탈퇴 직행 페이지"
+        actionText: "쿠팡 탈퇴 페이지"
         image: "/exit/coupang_3.png"
       - stepNumber: 3
         title: "탈퇴 유의사항 동의 및 본인 확인"
