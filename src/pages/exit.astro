@@ -132,15 +132,14 @@ const posts: CollectionEntry<"exit">[] = await getCollection("exit");
         color: var(--ink);
         transform: translate(3px, calc(-50% - 3px));
     }
-    @media (max-width: 960px) {
-        .grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-    @media (max-width: 600px) {
+
+    @media (max-width: 768px) {
         .listing {
-            width: calc(100% - 28px);
-            padding: 60px 0;
+            width: calc(100% - 32px);
+            padding: 40px 0;
+        }
+        .heading {
+            margin-bottom: 28px;
         }
         .grid {
             grid-template-columns: 1fr;

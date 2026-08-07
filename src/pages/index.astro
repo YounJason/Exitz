@@ -218,8 +218,8 @@ const privacySearchData = JSON.stringify(
           <span>누구나 쉽게.</span>
         </h3>
         <p class="feature-description">
-          복잡하고 아리송한 인증 프로세스나 탈퇴 동의서도<br />
-          스텝 바이 스텝 이미지 안내로 쉽게 따라할 수 있습니다.
+          복잡하고 아리송한 프로세스도<br />
+          스텝 바이 스텝 안내로 쉽게 따라할 수 있습니다.
         </p>
       </div>
       <div class="feature-visual-group">
@@ -1102,7 +1102,7 @@ const privacySearchData = JSON.stringify(
     background: #e5e8eb;
     border-radius: 20px;
     position: relative;
-    transition: background 0.25s 심플;
+    transition: background 0.25s ease;
     cursor: pointer;
   }
   .mockup-switch::after {
@@ -1204,5 +1204,51 @@ const privacySearchData = JSON.stringify(
     color: var(--ink);
     margin: 0;
     line-height: 1;
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      padding: 60px 16px;
+    }
+    .search-box {
+      height: 56px;
+      padding: 6px 6px 6px 14px;
+    }
+    .search-box button {
+      height: 44px;
+      padding: 0 16px;
+    }
+    .content {
+      width: calc(100% - 32px);
+      padding: 40px 0;
+    }
+    .guide-grid {
+      grid-template-columns: 1fr;
+    }
+    .tips-list {
+      grid-template-columns: 1fr;
+    }
+    .showcase-container {
+      padding: 60px 16px;
+      margin-top: 40px;
+    }
+    .feature-card,
+    .feature-card.reverse {
+      flex-direction: column;
+      gap: 32px;
+      margin-bottom: 80px;
+    }
+    .feature-text-group {
+      max-width: 100%;
+    }
+    .feature-visual-group {
+      width: 100%;
+    }
+    .preview-card {
+      max-width: 100%;
+    }
+    .brand-bottom-section {
+      padding: 60px 20px 100px;
+    }
   }
 </style>

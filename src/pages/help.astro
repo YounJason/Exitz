@@ -108,15 +108,17 @@ const posts: CollectionEntry<"help">[] = await getCollection("help");
         color: var(--ink);
         transform: translate(3px, -3px);
     }
+
     @media (max-width: 768px) {
+        .listing {
+            width: calc(100% - 32px);
+            padding: 40px 0;
+        }
+        .heading {
+            margin-bottom: 28px;
+        }
         .grid {
             grid-template-columns: 1fr;
-        }
-    }
-    @media (max-width: 600px) {
-        .listing {
-            width: calc(100% - 28px);
-            padding: 60px 0;
         }
     }
 </style>

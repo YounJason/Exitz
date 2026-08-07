@@ -1,5 +1,4 @@
 ---
-// @ts-ignore
 import { getCollection, type CollectionEntry } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 
@@ -131,13 +130,5 @@ const { Content } = await post.render();
     margin: 24px 0;
     color: #333d4b;
     font-size: 0.95rem;
-  }
-
-  @media (max-width: 600px) {
-    .article-container {
-      width: calc(100% - 28px);
-      padding-top: 36px;
-      padding-bottom: 60px;
-    }
   }
 </style>
