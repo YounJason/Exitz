@@ -4,7 +4,7 @@ serviceName: "구글 (Google)"
 domain: "google.com"
 pubDate: 2026-08-07
 description: "구글 계정 삭제 절차, 데이터 백업(Takeout), Gmail 및 Google Photos 등 연동 서비스 데이터 삭제 관련 필수 체크리스트와 링크 안내"
-logo: "/exit/google_1.svg"
+logo: "/exit/google_1.png"
 tabs:
   - id: "pc"
     label: "컴퓨터"
