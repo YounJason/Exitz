@@ -91,7 +91,7 @@ const howToSchema = {
             >
           </span>
         </div>
-        
+
         {
           tabs.map((tab) => (
             <div class="sidebar-step-list" data-sidebar-platform={tab.id}>
@@ -336,9 +336,15 @@ const howToSchema = {
         });
       }
     });
-
-    const initialPlatform =
+    let initialPlatform =
       tabBtns.length > 0 ? tabBtns[0].dataset.platform : "pc";
+    if (
+      window.innerHeight > window.innerWidth &&
+      Array.from(tabBtns).some((btn) => btn.dataset.platform === "mobile")
+    ) {
+      initialPlatform = "mobile";
+    }
+
     activatePlatform(initialPlatform);
   });
 </script>
