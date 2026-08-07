@@ -8,10 +8,17 @@ const allHelp = await getCollection("help");
 const exitPosts = allExit.slice(0, 6);
 const privacyPosts = allHelp.slice(0, 4);
 
+const siteUrl = Astro.site ? Astro.site.origin : "https://exitz.me";
 const placeholderDomains = exitPosts.map((post: any) => post.data.domain);
 ---
 
-<Layout title="Exitz" indexTitle>
+<Layout
+  title="Exitz"
+  indexTitle
+  description="떠나는 것도, 깔끔하게. Exitz."
+  image="/logo.svg"
+  url={siteUrl}
+>
   <section class="hero">
     <div class="hero-inner">
       <p class="eyebrow">ACCOUNT EXIT GUIDE</p>

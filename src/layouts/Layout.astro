@@ -2,9 +2,19 @@
 interface Props {
   title: string;
   indexTitle?: boolean;
+  description?: string;
+  image?: string;
+  url?: string;
+  type?: string;
 }
 
-const { title, indexTitle = false } = Astro.props;
+const { title, indexTitle = false, description, image, url, type } = Astro.props;
+const siteUrl = Astro.site ? Astro.site.origin : "https://exitz.me";
+const pageTitle = indexTitle ? title : `${title} · Exitz`;
+const metaDescription = description ?? "떠나는 것도, 깔끔하게. Exitz.";
+const metaType = type ?? "website";
+const canonicalUrl = url ?? siteUrl;
+const metaImage = image ? (image.startsWith("http") ? image : `${siteUrl}${image}`) : undefined;
 ---
 
 <!doctype html>
@@ -13,6 +23,22 @@ const { title, indexTitle = false } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#f7f7f5" />
+    <meta name="description" content={metaDescription} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:site_name" content="Exitz" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:type" content={metaType} />
+    <meta property="og:url" content={canonicalUrl} />
+    {metaImage && <meta property="og:image" content={metaImage} />}
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content={metaImage ? "summary_large_image" : "summary"} />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={metaDescription} />
+    {metaImage && <meta name="twitter:image" content={metaImage} />}
     <link rel="icon" href="/icon.svg" type="image/svg+xml" />
     <link rel="shortcut icon" href="/icon.svg" />
     <title>{indexTitle ? title : `${title} · Exitz`}</title>

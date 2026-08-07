@@ -90,7 +90,13 @@ const howToSchema = {
 };
 ---
 
-<Layout title={data.title}>
+<Layout
+  title={data.title}
+  description={data.description}
+  image={data.logo}
+  url={currentUrl}
+  type="article"
+>
   <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
 
   <div class="container article-container">
