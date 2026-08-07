@@ -2,24 +2,13 @@
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 
-const exitPosts = await getCollection("exit");
-const privacyPosts = await getCollection("help");
+const allExit = await getCollection("exit");
+const allHelp = await getCollection("help");
 
-const domainMap = JSON.stringify(
-  exitPosts.map((post: any) => ({
-    domain: post.data.domain.toLowerCase(),
-    serviceName: post.data.serviceName,
-    logo: post.data.logo || null,
-    slug: post.slug,
-  })),
-);
+const exitPosts = allExit.slice(0, 6);
+const privacyPosts = allHelp.slice(0, 4);
 
-const privacySearchData = JSON.stringify(
-  privacyPosts.map((post: any) => ({
-    title: post.data.title,
-    slug: post.slug,
-  })),
-);
+const placeholderDomains = exitPosts.map((post: any) => post.data.domain);
 ---
 
 <Layout title="Exitz" indexTitle>
@@ -251,94 +240,17 @@ const privacySearchData = JSON.stringify(
 <script
   is:inline
   define:vars={{
-    domainMapJson: domainMap,
-    privacySearchJson: privacySearchData,
+    placeholderDomains: placeholderDomains,
   }}
 >
-  const domainData = JSON.parse(domainMapJson);
-  const privacyData = JSON.parse(privacySearchJson);
   const form = document.getElementById("search-form");
   const input = document.getElementById("search-input");
   const suggestionsBox = document.getElementById("search-suggestions");
+  const wrapper = document.querySelector(".search-wrapper");
 
-  const CHOSUNG = [
-    "ㄱ", "ㄲ", "ㄴ", "ㄷ", "ㄸ", "ㄹ", "ㅁ", "ㅂ", "ㅃ", "ㅅ", "ㅆ",
-    "ㅇ", "ㅈ", "ㅉ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"
-  ];
-  const JUNGSUNG = [
-    "ㅏ", "ㅐ", "ㅑ", "ㅒ", "ㅓ", "ㅔ", "ㅕ", "ㅖ", "ㅗ", "ㅘ", "ㅙ",
-    "ㅚ", "ㅛ", "ㅜ", "ㅝ", "ㅞ", "ㅟ", "ㅠ", "ㅡ", "ㅢ", "ㅣ"
-  ];
-  const JONGSUNG = [
-    "", "ㄱ", "ㄲ", "ㄳ", "ㄴ", "ㄵ", "ㄶ", "ㄷ", "ㄹ", "ㄺ", "ㄻ", "ㄼ",
-    "ㄽ", "ㄾ", "ㄿ", "ㅀ", "ㅁ", "ㅂ", "ㅄ", "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅊ",
-    "ㅋ", "ㅌ", "ㅍ", "ㅎ"
-  ];
-  const JONG_EXPAND = {
-    "ㄳ": "ㄱㅅ", "ㄵ": "ㄴㅈ", "ㄶ": "ㄴㅎ", "ㄺ": "ㄹㄱ",
-    "ㄻ": "ㄹㅁ", "ㄼ": "ㄹㅂ", "ㄽ": "ㄹㅅ", "ㄾ": "ㄹㅌ",
-    "ㄿ": "ㄹㅍ", "ㅀ": "ㄹㅎ", "ㅄ": "ㅂㅅ"
-  };
-
-  function decomposeHangul(str) {
-    let result = "";
-    for (let i = 0; i < str.length; i++) {
-      const code = str.charCodeAt(i);
-      if (code >= 0xac00 && code <= 0xd7a3) {
-        const index = code - 0xac00;
-        const jong = index % 28;
-        const jung = Math.floor((index - jong) / 28) % 21;
-        const cho = Math.floor((index - jong) / 28 / 21);
-
-        result += CHOSUNG[cho] + JUNGSUNG[jung];
-        if (jong > 0) {
-          const jChar = JONGSUNG[jong];
-          result += JONG_EXPAND[jChar] || jChar;
-        }
-      } else {
-        result += str[i];
-      }
-    }
-    return result.toLowerCase();
-  }
-
-  function getChosung(str) {
-    let result = "";
-    for (let i = 0; i < str.length; i++) {
-      const code = str.charCodeAt(i);
-      if (code >= 0xac00 && code <= 0xd7a3) {
-        const index = code - 0xac00;
-        const cho = Math.floor((index - (index % 28)) / 28 / 21);
-        result += CHOSUNG[cho];
-      } else {
-        result += str[i];
-      }
-    }
-    return result.toLowerCase();
-  }
-
-  function isOnlyChosung(str) {
-    return str.split("").every((char) => CHOSUNG.includes(char) || char === " ");
-  }
-
-  function matchKorean(target, query) {
-    if (!target || !query) return false;
-    const cleanTarget = target.trim().toLowerCase();
-    const cleanQuery = query.trim().toLowerCase();
-
-    if (cleanTarget.includes(cleanQuery)) return true;
-
-    const decTarget = decomposeHangul(cleanTarget);
-    const decQuery = decomposeHangul(cleanQuery);
-    if (decTarget.includes(decQuery)) return true;
-
-    if (isOnlyChosung(cleanQuery)) {
-      const choTarget = getChosung(cleanTarget);
-      if (choTarget.includes(cleanQuery)) return true;
-    }
-
-    return false;
-  }
+  let currentItems = [];
+  let activeIndex = -1;
+  let debounceTimer = null;
 
   function escapeHtml(str) {
     return String(str)
@@ -348,41 +260,20 @@ const privacySearchData = JSON.stringify(
       .replace(/"/g, "&quot;");
   }
 
-  function getSuggestions(rawQuery) {
+  // 서버 API 엔드포인트에서 비동기로 검색 결과 가져오기
+  async function getSuggestions(rawQuery) {
     const query = rawQuery.trim();
     if (!query) return [];
 
-    const exitMatches = domainData
-      .filter(
-        (x) =>
-          matchKorean(x.domain, query) ||
-          matchKorean(x.serviceName, query),
-      )
-      .map((x) => ({
-        type: "exit",
-        title: x.serviceName,
-        sub: x.domain,
-        slug: x.slug,
-        logo: x.logo,
-      }));
-
-    const helpMatches = privacyData
-      .filter((x) => matchKorean(x.title, query))
-      .map((x) => ({
-        type: "help",
-        title: x.title,
-        sub: "",
-        slug: x.slug,
-        logo: null,
-      }));
-
-    return [...exitMatches, ...helpMatches].slice(0, 6);
+    try {
+      const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+      if (!response.ok) return [];
+      return await response.json();
+    } catch (error) {
+      console.error("검색 요청 실패:", error);
+      return [];
+    }
   }
-
-  const wrapper = document.querySelector(".search-wrapper");
-
-  let currentItems = [];
-  let activeIndex = -1;
 
   function setActive(index) {
     activeIndex = index;
@@ -401,14 +292,14 @@ const privacySearchData = JSON.stringify(
     input.setAttribute("aria-expanded", "false");
   }
 
-  function renderSuggestions(rawQuery) {
+  async function renderSuggestions(rawQuery) {
     const trimmed = rawQuery.trim();
     if (!trimmed) {
       hideSuggestions();
       return;
     }
 
-    const matches = getSuggestions(trimmed);
+    const matches = await getSuggestions(trimmed);
 
     if (!matches.length) {
       suggestionsBox.innerHTML = `<p class="suggestions-empty">"${escapeHtml(trimmed)}"에 대한 결과가 없어요.</p>`;
@@ -456,8 +347,12 @@ const privacySearchData = JSON.stringify(
     });
   }
 
+  // 디바운싱(Debounce) 적용: 사용자가 타이핑하는 동안 서버 요청 폭주 방지 (150ms)
   input?.addEventListener("input", () => {
-    renderSuggestions(input.value);
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      renderSuggestions(input.value);
+    }, 150);
   });
 
   input?.addEventListener("focus", () => {
@@ -497,7 +392,11 @@ const privacySearchData = JSON.stringify(
     }
   });
 
-  const placeholderTexts = domainData.map((x) => x.domain);
+  // 플레이스홀더 자동 타이핑 애니메이션
+  const placeholderTexts =
+    placeholderDomains && placeholderDomains.length > 0
+      ? placeholderDomains
+      : ["instagram.com", "spotify.com"];
   let currentIndex = 0;
 
   function typePlaceholder() {
@@ -530,6 +429,7 @@ const privacySearchData = JSON.stringify(
 
   typePlaceholder();
 
+  // 스크롤 시 페이드인 애니메이션 (Intersection Observer)
   const observerOptions = {
     root: null,
     rootMargin: "0px",
