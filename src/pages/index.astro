@@ -267,7 +267,6 @@ const placeholderDomains = exitPosts.map((post: any) => post.data.domain);
       .replace(/"/g, "&quot;");
   }
 
-  // 서버 API 엔드포인트에서 비동기로 검색 결과 가져오기
   async function getSuggestions(rawQuery) {
     const query = rawQuery.trim();
     if (!query) return [];
@@ -354,7 +353,6 @@ const placeholderDomains = exitPosts.map((post: any) => post.data.domain);
     });
   }
 
-  // 디바운싱(Debounce) 적용: 사용자가 타이핑하는 동안 서버 요청 폭주 방지 (150ms)
   input?.addEventListener("input", () => {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
@@ -399,7 +397,6 @@ const placeholderDomains = exitPosts.map((post: any) => post.data.domain);
     }
   });
 
-  // 플레이스홀더 자동 타이핑 애니메이션
   const placeholderTexts =
     placeholderDomains && placeholderDomains.length > 0
       ? placeholderDomains
@@ -436,7 +433,6 @@ const placeholderDomains = exitPosts.map((post: any) => post.data.domain);
 
   typePlaceholder();
 
-  // 스크롤 시 페이드인 애니메이션 (Intersection Observer)
   const observerOptions = {
     root: null,
     rootMargin: "0px",
