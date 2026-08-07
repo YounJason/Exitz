@@ -4,6 +4,7 @@ import rehypeExternalLinks from 'rehype-external-links';
 
 export default defineConfig({
   output: 'static',
+  site: 'https://exitz.me',
   adapter: netlify(),
   markdown: {
     rehypePlugins: [
