@@ -1,12 +1,21 @@
 ---
+export const prerender = false;
+
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
+import { getViewCounts } from "../lib/views";
+import { sortPosts } from "../lib/sort";
 
 const allExit = await getCollection("exit");
 const allHelp = await getCollection("help");
 
-const exitPosts = allExit.slice(0, 6);
-const privacyPosts = allHelp.slice(0, 4);
+const [exitViews, helpViews] = await Promise.all([
+  getViewCounts("exit"),
+  getViewCounts("help"),
+]);
+
+const exitPosts = sortPosts(allExit, exitViews, "views").slice(0, 6);
+const privacyPosts = sortPosts(allHelp, helpViews, "views").slice(0, 4);
 
 const siteUrl = Astro.site ? Astro.site.origin : "https://exitz.me";
 const placeholderDomains = exitPosts.map((post: any) => post.data.domain);

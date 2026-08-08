@@ -36,7 +36,13 @@ const { Content } = await post.render();
 
       <div class="article-meta">
         {post.data.description && <p class="description">{post.data.description}</p>}
-        <span>최근 업데이트: {post.data.pubDate.toISOString().slice(0, 10)}</span>
+        <div class="meta-row">
+          <span>최근 업데이트: {post.data.pubDate.toISOString().slice(0, 10)}</span>
+          <span class="view-count-badge">
+            <span aria-hidden="true">👁</span>
+            <span id="view-count">-</span>
+          </span>
+        </div>
       </div>
 
       <hr class="divider" />
@@ -47,6 +53,47 @@ const { Content } = await post.render();
     </article>
   </div>
 </Layout>
+
+<script
+  is:inline
+  define:vars={{ postSlug: post.slug ?? post.id, postType: "help" }}
+>
+  (async () => {
+    const viewEl = document.getElementById("view-count");
+    if (!viewEl || !postSlug) return;
+
+    const formatViews = (n) =>
+      typeof n === "number" ? n.toLocaleString("ko-KR") : "-";
+
+    try {
+      const dedupeKey = `exitz_viewed_${postType}_${postSlug}`;
+      const oneDay = 24 * 60 * 60 * 1000;
+      const lastViewed = localStorage.getItem(dedupeKey);
+      const now = Date.now();
+      const shouldCount =
+        !lastViewed || now - parseInt(lastViewed, 10) > oneDay;
+
+      const res = await fetch(
+        `/api/views/${encodeURIComponent(postSlug)}?type=${postType}`,
+        { method: shouldCount ? "POST" : "GET" },
+      );
+
+      if (shouldCount) {
+        localStorage.setItem(dedupeKey, String(now));
+      }
+
+      if (res.ok) {
+        const data = await res.json();
+        viewEl.textContent = formatViews(data.views);
+      } else {
+        viewEl.textContent = "0";
+      }
+    } catch (e) {
+      console.error("조회수 로드 실패:", e);
+      viewEl.textContent = "0";
+    }
+  })();
+</script>
 
 <style>
   .article-container {
@@ -85,6 +132,19 @@ const { Content } = await post.render();
     font-size: 0.85rem;
     color: var(--muted);
     margin-top: 8px;
+  }
+
+  .meta-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .view-count-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
   }
 
   .description {
