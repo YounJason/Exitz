@@ -252,7 +252,13 @@ const howToSchema = {
   </div>
 </Layout>
 
-<script is:inline>
+<script
+  is:inline
+  define:vars={{
+    postSlug: post.slug ?? post.id,
+    postType: "exit",
+  }}
+>
   document.addEventListener("DOMContentLoaded", () => {
     const tabBtns = document.querySelectorAll(".tab-btn");
     const platformContents = document.querySelectorAll(".platform-content");
