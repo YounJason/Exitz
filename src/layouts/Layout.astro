@@ -43,13 +43,13 @@ const metaImage = targetImage.startsWith("http")
         try {
           var params = new URLSearchParams(location.search);
           if (params.has("owner")) {
-            if (params.get("owner") === "off") {
+            if (params.get("owner") === "false") {
               localStorage.removeItem("exitz_owner_mode");
             } else {
-              localStorage.setItem("exitz_owner_mode", "1");
+              localStorage.setItem("exitz_owner_mode", "true");
             }
           }
-          if (localStorage.getItem("exitz_owner_mode") === "1") {
+          if (localStorage.getItem("exitz_owner_mode") === "true") {
             document.documentElement.classList.add("is-owner-mode");
           }
         } catch (e) {}
