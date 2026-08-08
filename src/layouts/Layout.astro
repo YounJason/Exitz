@@ -38,24 +38,6 @@ const metaImage = targetImage.startsWith("http")
     <meta name="description" content={metaDescription} />
     <link rel="canonical" href={canonicalUrl} />
 
-    <script is:inline>
-      (function () {
-        try {
-          var params = new URLSearchParams(location.search);
-          if (params.has("owner")) {
-            if (params.get("owner") === "off") {
-              localStorage.removeItem("exitz_owner_mode");
-            } else {
-              localStorage.setItem("exitz_owner_mode", "1");
-            }
-          }
-          if (localStorage.getItem("exitz_owner_mode") === "1") {
-            document.documentElement.classList.add("is-owner-mode");
-          }
-        } catch (e) {}
-      })();
-    </script>
-
     <meta property="og:site_name" content="Exitz" />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={metaDescription} />
@@ -85,10 +67,6 @@ const metaImage = targetImage.startsWith("http")
       crossorigin="anonymous"></script>
   </head>
   <body>
-    <div class="owner-banner">
-      <span>Owner mode 켜짐</span>
-      <a href="?owner=off">끄기</a>
-    </div>
     <header class="site-header">
       <div class="header-inner">
         <a href="/" class="brand" aria-label="Exitz 홈">
@@ -148,27 +126,6 @@ const metaImage = targetImage.startsWith("http")
   }
   html {
     scroll-behavior: smooth;
-  }
-  .owner-banner {
-    display: none;
-  }
-  html.is-owner-mode .owner-banner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    background: #171717;
-    color: #fff;
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-align: center;
-    padding: 8px 16px;
-  }
-  html.is-owner-mode .owner-banner a {
-    color: #fff;
-    text-decoration: underline;
-    flex-shrink: 0;
   }
   body {
     font-family: "DM Sans", "Noto Sans KR", sans-serif;
