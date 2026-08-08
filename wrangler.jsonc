@@ -2,7 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "exitz",
   "main": "./dist/_worker.js/index.js",
-  "compatibility_date": "2026-08-09",
+  "compatibility_date": "2026-04-15",
   "compatibility_flags": ["nodejs_compat"],
   "assets": {
     "binding": "ASSETS",
