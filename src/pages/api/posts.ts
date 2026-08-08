@@ -1,3 +1,5 @@
+export const prerender = false;
+
 import { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 import { getViewCounts } from "../../lib/views";
