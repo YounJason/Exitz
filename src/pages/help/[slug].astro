@@ -35,8 +35,18 @@ const { Content } = await post.render();
       <h1>{post.data.title}</h1>
 
       <div class="article-meta">
-        {post.data.description && <p class="description">{post.data.description}</p>}
-        <span>최근 업데이트: {post.data.pubDate.toISOString().slice(0, 10)}</span>
+        {
+          post.data.description && (
+            <p class="description">{post.data.description}</p>
+          )
+        }
+        <span
+          >최근 업데이트: {post.data.pubDate.toISOString().slice(0, 10)}</span
+        >
+        <span class="view-count-badge">
+          <span aria-hidden="true">👁</span>
+          <span id="view-count">-</span>
+        </span>
       </div>
 
       <hr class="divider" />
@@ -47,6 +57,66 @@ const { Content } = await post.render();
     </article>
   </div>
 </Layout>
+
+<script
+  is:inline
+  define:vars={{
+    postSlug: post.slug ?? post.id,
+    postType: "help",
+  }}
+>
+  (async () => {
+    const viewEl =
+      document.getElementById("view-count");
+
+    if (!viewEl || !postSlug) return;
+
+    try {
+      const key =
+        `exitz_viewed_${postType}_${postSlug}`;
+
+      const oneDay = 24 * 60 * 60 * 1000;
+      const lastViewed =
+        localStorage.getItem(key);
+
+      const now = Date.now();
+
+      const shouldCount =
+        !lastViewed ||
+        now - Number(lastViewed) > oneDay;
+
+      const response = await fetch(
+        `/api/views/${encodeURIComponent(postSlug)}?type=${postType}`,
+        {
+          method: shouldCount ? "POST" : "GET",
+        },
+      );
+
+      if (shouldCount) {
+        localStorage.setItem(
+          key,
+          String(now),
+        );
+      }
+
+      if (response.ok) {
+        const data = await response.json();
+
+        viewEl.textContent =
+          Number(data.views).toLocaleString("ko-KR");
+      } else {
+        viewEl.textContent = "0";
+      }
+    } catch (error) {
+      console.error(
+        "조회수 로드 실패:",
+        error,
+      );
+
+      viewEl.textContent = "0";
+    }
+  })();
+</script>
 
 <style>
   .article-container {
