@@ -3,19 +3,19 @@ import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import { getViewCounts } from "../lib/views";
-import { SORT_LABELS, SORT_OPTIONS, normalizeSort, sortPosts } from "../lib/sort";
+import {
+    SORT_LABELS,
+    SORT_OPTIONS,
+    normalizeSort,
+    sortPosts,
+} from "../lib/sort";
 
 const INITIAL_LIMIT = 9;
 const sort = normalizeSort(Astro.url.searchParams.get("sort"));
 
 const allPosts: CollectionEntry<"exit">[] = await getCollection("exit");
 const slugs = allPosts.map((post) => post.slug);
-const runtime = (globalThis as any).VIEWS
-    ? { VIEWS: (globalThis as any).VIEWS }
-    : undefined;
-const viewMap = runtime
-    ? await getViewCounts(runtime, "exit", slugs)
-    : {};
+const viewMap = await getViewCounts(Astro.locals.runtime.env, "exit", slugs);
 const sortedPosts = sortPosts(allPosts, viewMap, sort);
 
 const initialPosts = sortedPosts.slice(0, INITIAL_LIMIT);
@@ -65,11 +65,13 @@ const currentUrl = Astro.url.toString();
                         <div class="card-copy">
                             <h2>{post.data.serviceName}</h2>
                             <span class="domain">{post.data.domain}</span>
+                            <span class="view-badge">
+                                <span aria-hidden="true">👁</span>
+                                {(viewMap[post.slug] || 0).toLocaleString(
+                                    "ko-KR",
+                                )}
+                            </span>
                         </div>
-                        <span class="view-badge">
-                            <span aria-hidden="true">👁</span>
-                            {(viewMap[post.slug] || 0).toLocaleString("ko-KR")}
-                        </span>
                         <span class="card-arrow" aria-hidden="true">
                             ↗
                         </span>
@@ -308,7 +310,6 @@ const currentUrl = Astro.url.toString();
         font-weight: 600;
         color: var(--muted);
         white-space: nowrap;
-        padding: 4px 8px;
     }
     .sentinel {
         display: flex;
