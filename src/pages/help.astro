@@ -10,12 +10,11 @@ const sort = normalizeSort(Astro.url.searchParams.get("sort"));
 
 const allPosts: CollectionEntry<"help">[] = await getCollection("help");
 const slugs = allPosts.map((post) => post.slug);
-const runtime = (globalThis as any).VIEWS
-    ? { VIEWS: (globalThis as any).VIEWS }
-    : undefined;
-const viewMap = runtime
-    ? await getViewCounts(runtime, "help", slugs)
-    : {};
+const viewMap = await getViewCounts(
+    Astro.locals.runtime.env,
+    "help",
+    slugs,
+);
 const sortedPosts = sortPosts(allPosts, viewMap, sort);
 
 const initialPosts = sortedPosts.slice(0, INITIAL_LIMIT);
@@ -263,7 +262,6 @@ const currentUrl = Astro.url.toString();
         font-size: 0.78rem;
         font-weight: 600;
         color: var(--muted);
-        padding: 4px 8px;
     }
     :global(.card-arrow) {
         position: absolute;
