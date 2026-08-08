@@ -15,10 +15,17 @@ export async function getStaticPaths() {
 }
 
 const post = (Astro.props as Props).post;
+const data = post.data;
+const currentUrl = Astro.url.toString();
 const { Content } = await post.render();
 ---
 
-<Layout title={post.data.title}>
+<Layout
+  title={data.title}
+  description={data.description}
+  url={currentUrl}
+  type="article"
+>
   <div class="container article-container">
     <nav class="breadcrumb">
       <a href="/">Exitz</a> &gt; <a href="/help">개인정보 도움말</a>

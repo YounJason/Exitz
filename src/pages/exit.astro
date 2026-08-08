@@ -7,9 +7,14 @@ const INITIAL_LIMIT = 9;
 const allPosts: CollectionEntry<"exit">[] = await getCollection("exit");
 const initialPosts = allPosts.slice(0, INITIAL_LIMIT);
 const initialHasMore = allPosts.length > INITIAL_LIMIT;
+const currentUrl = Astro.url.toString();
 ---
 
-<Layout title="계정 탈퇴 가이드">
+<Layout
+    title="계정 탈퇴 가이드"
+    description="서비스별 계정 탈퇴 방법을 알아보세요."
+    url={currentUrl}
+>
     <section class="listing">
         <div class="heading">
             <p class="eyebrow">ALL EXIT GUIDES</p>
