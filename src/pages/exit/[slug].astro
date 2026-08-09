@@ -110,7 +110,8 @@ const howToSchema = {
         <h1>{data.title}</h1>
         <p class="description">{data.description}</p>
         <div class="article-meta">
-          <span class="pub-date">최근 업데이트: {data.pubDate.toISOString().slice(0, 10)}</span
+          <span class="pub-date"
+            >최근 업데이트: {data.pubDate.toISOString().slice(0, 10)}</span
           >
           <span class="view-count-badge">
             <span aria-hidden="true">👁</span>
@@ -385,13 +386,22 @@ const howToSchema = {
         });
       }
     });
-    let initialPlatform =
-      tabBtns.length > 0 ? tabBtns[0].dataset.platform : "pc";
-    if (
-      window.innerHeight > window.innerWidth &&
-      Array.from(tabBtns).some((btn) => btn.dataset.platform === "mobile")
-    ) {
-      initialPlatform = "mobile";
+    let initialPlatform = "pc";
+    const platformIds = Array.from(tabBtns)
+      .map((btn) => btn.dataset.platform)
+      .filter(Boolean);
+
+    if (platformIds.length > 0) {
+      if (
+        window.innerHeight > window.innerWidth &&
+        platformIds.includes("mobile")
+      ) {
+        initialPlatform = "mobile";
+      } else if (platformIds.includes("pc")) {
+        initialPlatform = "pc";
+      } else {
+        initialPlatform = platformIds[0];
+      }
     }
 
     activatePlatform(initialPlatform);
