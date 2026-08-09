@@ -2,6 +2,7 @@ export const prerender = false;
 
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
+import { getViewCounts } from "../../lib/views";
 
 const CHOSUNG = [
   "ㄱ", "ㄲ", "ㄴ", "ㄷ", "ㄸ", "ㄹ", "ㅁ", "ㅂ", "ㅃ", "ㅅ", "ㅆ",
@@ -82,7 +83,7 @@ function matchKorean(target: string, query: string) {
   return false;
 }
 
-export const GET: APIRoute = async ({ url }) => {
+export const GET: APIRoute = async ({ url, locals }) => {
   const query = url.searchParams.get("q")?.trim() || "";
   
   if (!query) {
@@ -94,6 +95,17 @@ export const GET: APIRoute = async ({ url }) => {
 
   const exitPosts = await getCollection("exit");
   const privacyPosts = await getCollection("help");
+  const runtimeEnv = (locals as { runtime?: { env?: any } }).runtime?.env as any;
+
+  const exitSlugs = exitPosts.map((post: any) => post.slug || post.id);
+  const helpSlugs = privacyPosts.map((post: any) => post.slug || post.id);
+
+  const exitViewMap = runtimeEnv
+    ? await getViewCounts(runtimeEnv, "exit", exitSlugs)
+    : {};
+  const helpViewMap = runtimeEnv
+    ? await getViewCounts(runtimeEnv, "help", helpSlugs)
+    : {};
 
   const exitMatches = exitPosts
     .filter(
@@ -101,25 +113,35 @@ export const GET: APIRoute = async ({ url }) => {
         matchKorean(x.data.domain, query) ||
         matchKorean(x.data.serviceName, query)
     )
-    .map((x: any) => ({
-      type: "exit",
-      title: x.data.serviceName,
-      sub: x.data.domain,
-      slug: x.slug || x.id,
-      logo: x.data.logo || null,
-    }));
+    .map((x: any) => {
+      const slug = x.slug || x.id;
+      return {
+        type: "exit",
+        title: x.data.serviceName,
+        sub: x.data.domain,
+        slug,
+        logo: x.data.logo || null,
+        views: exitViewMap[slug] ?? 0,
+      };
+    });
 
   const helpMatches = privacyPosts
     .filter((x: any) => matchKorean(x.data.title, query))
-    .map((x: any) => ({
-      type: "help",
-      title: x.data.title,
-      sub: "",
-      slug: x.slug || x.id,
-      logo: null,
-    }));
+    .map((x: any) => {
+      const slug = x.slug || x.id;
+      return {
+        type: "help",
+        title: x.data.title,
+        sub: "",
+        slug,
+        logo: null,
+        views: helpViewMap[slug] ?? 0,
+      };
+    });
 
-  const results = [...exitMatches, ...helpMatches].slice(0, 6);
+  const results = [...exitMatches, ...helpMatches]
+    .sort((a, b) => (b.views ?? 0) - (a.views ?? 0))
+    .slice(0, 6);
 
   return new Response(JSON.stringify(results), {
     status: 200,
