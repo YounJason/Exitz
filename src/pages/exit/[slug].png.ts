@@ -76,6 +76,7 @@ export const GET: APIRoute = async ({ props }) => {
                           width: "100%",
                           height: "100%",
                           objectFit: "contain",
+                          borderRadius: "24px",
                         },
                       },
                     }
