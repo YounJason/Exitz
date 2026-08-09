@@ -13,7 +13,7 @@ const sort = normalizeSort(Astro.url.searchParams.get("sort"));
 const allPosts: CollectionEntry<"help">[] = await getCollection("help");
 const slugs = allPosts.map((post) => post.slug);
 
-const env = Astro.locals.runtime?.env;
+const env = (Astro.locals as any).runtime?.env;
 const viewMap = env ? await getViewCounts(env, "help", slugs) : {};
 const sortedPosts = sortPosts(allPosts, viewMap, sort);
 
