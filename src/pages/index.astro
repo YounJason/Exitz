@@ -1,12 +1,13 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
+import { sortPosts } from "../lib/sort";
 
 const allExit = await getCollection("exit");
 const allHelp = await getCollection("help");
 
-const exitPosts = allExit.slice(0, 6);
-const privacyPosts = allHelp.slice(0, 4);
+const exitPosts = sortPosts(allExit, {}, "latest").slice(0, 6);
+const privacyPosts = sortPosts(allHelp, {}, "latest").slice(0, 4);
 
 const siteUrl = Astro.site ? Astro.site.origin : "https://exitz.me";
 const placeholderDomains = exitPosts.map((post: any) => post.data.domain);
@@ -399,10 +400,12 @@ const placeholderDomains = exitPosts.map((post: any) => post.data.domain);
     }
   });
 
-  const placeholderTexts =
-    placeholderDomains && placeholderDomains.length > 0
-      ? placeholderDomains
-      : ["instagram.com", "spotify.com"];
+  const _defaultPlaceholders = [];
+  const placeholderTexts = (() => {
+    if (!placeholderDomains || !placeholderDomains.length) return _defaultPlaceholders;
+    const filtered = placeholderDomains.filter((d) => d && String(d).trim().length > 0);
+    return filtered.length ? filtered : _defaultPlaceholders;
+  })();
   let currentIndex = 0;
 
   function typePlaceholder() {
