@@ -27,8 +27,8 @@ tabs:
         description: "회원 탈퇴에 따른 안내 사항(구매 내역 삭제, 포인트 소멸 등)을 신중히 확인한 후 동의 체크박스에 체크하고, 보안을 위한 본인 계정 비밀번호를 입력한 뒤 '다음' 버튼을 누르세요."
         image: "/exit/coupang/4.png"
       - stepNumber: 4
-        title: "이용 내역 및 잔여 혜택 최종 확인"
-        description: "아래 탈퇴 동의 항목에 체크합니다."
+        title: "이용 내역 확인 및 탈퇴 동의"
+        description: "이용 내역을 확인하고 탈퇴 진행 절차에 동의합니다."
         image: "/exit/coupang/5.png"
         tip: "현재 소지 중인 쿠폰, 캐시, 최근 구매 내역 등이 최종 정리되었는지 확인하세요."
       - stepNumber: 5
