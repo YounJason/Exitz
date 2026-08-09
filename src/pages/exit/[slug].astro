@@ -387,21 +387,24 @@ const howToSchema = {
       }
     });
     let initialPlatform = "pc";
-    const platformIds = Array.from(tabBtns)
-      .map((btn) => btn.dataset.platform)
-      .filter(Boolean);
 
-    if (platformIds.length > 0) {
-      if (
-        window.innerHeight > window.innerWidth &&
-        platformIds.includes("mobile")
-      ) {
-        initialPlatform = "mobile";
-      } else if (platformIds.includes("pc")) {
-        initialPlatform = "pc";
-      } else {
-        initialPlatform = platformIds[0];
-      }
+    if (tabBtns.length > 0) {
+      initialPlatform = tabBtns[0].dataset.platform || "pc";
+    } else if (platformContents.length > 0) {
+      initialPlatform = platformContents[0].dataset.platformContent || "pc";
+    }
+
+    const hasMobilePlatform =
+      Array.from(tabBtns).some((btn) => btn.dataset.platform === "mobile") ||
+      Array.from(platformContents).some(
+        (content) => content.dataset.platformContent === "mobile",
+      );
+
+    if (
+      window.innerHeight > window.innerWidth &&
+      hasMobilePlatform
+    ) {
+      initialPlatform = "mobile";
     }
 
     activatePlatform(initialPlatform);
