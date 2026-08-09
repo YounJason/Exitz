@@ -41,13 +41,12 @@ pubDate: 2026-08-07
 개인정보 포털 접속 후 아래 순서대로 진행하면 10분 이내로 쉽게 탈퇴 신청을 마칠 수 있습니다.
 
 ### STEP 01. 개인정보 수집·이용 동의
-개인정보 포털의 [`웹사이트 회원 탈퇴`](https://www.privacy.go.kr/front/wcp/dcl/per/memberSecStep1.do) 메뉴에 접속하여 본인확인 내역 조회를 위한 기본 약관 및 개인정보 수집·이용에 동의합니다.
+개인정보 포털의 ['웹사이트 회원 탈퇴'](https://www.privacy.go.kr/front/wcp/dcl/per/memberSecStep1.do) 메뉴에 접속하여 본인확인 내역 조회를 위한 기본 약관 및 개인정보 수집·이용에 동의합니다.
 ![개인정보 동의 화면 스크린샷](/help/privacy-withdrawal-service_2.png)
 
 ### STEP 02. 본인확인 진행
 본인명의로 발급된 인증 수단을 선택해 본인인증을 진행합니다.
 - **인증 수단**: 휴대폰, 공동인증서, 아이핀, 신용카드, SNS 인증 등
-- 💡 **팁**: 본인확인 내역을 가장 넓게 조회하려면 **휴대폰 인증**을 사용하는 것을 권장합니다.
 ![본인인증 화면 스크린샷](/help/privacy-withdrawal-service_3.png)
 
 ### STEP 03. 본인확인 내역 조회 및 탈퇴 대상 선택
