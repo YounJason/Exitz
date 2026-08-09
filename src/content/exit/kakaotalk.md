@@ -1,7 +1,7 @@
 ---
 title: "카카오톡 (KakaoTalk) 계정 회원 탈퇴 하는 방법"
 serviceName: "카카오톡 (KakaoTalk)"
-pubDate: 2026-08-09
+pubDate: 2026-08-10
 description: "카카오톡 계정 탈퇴 절차, 대화 내역/톡클라우드 삭제, 미사용 선물 및 이모티콘 소멸, 카카오계정과 탈퇴 차이점 관련 필수 체크리스트 안내"
 logo: "/exit/kakaotalk/1.png"
 tabs:
