@@ -21,7 +21,7 @@ const exitCollection = defineCollection({
   schema: z.object({
     title: z.string(),
     serviceName: z.string(),
-    domain: z.string(),
+    domain: z.string().optional(),
     pubDate: z.date(),
     description: z.string(),
     logo: z.string().optional(),
