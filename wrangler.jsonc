@@ -3,11 +3,20 @@
   "name": "exitz",
   "main": "./dist/_worker.js/index.js",
   "compatibility_date": "2026-04-15",
-  "compatibility_flags": ["nodejs_compat"],
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
   "assets": {
     "binding": "ASSETS",
     "directory": "./dist",
-    "not_found_handling": "404-page"
+    "not_found_handling": "404-page",
+    "run_worker_first": [
+      "/_server-islands/*",
+      "/_image",
+      "/api/*",
+      "/exit",
+      "/help"
+    ]
   },
   "kv_namespaces": [
     {
@@ -15,5 +24,7 @@
       "id": "683a691d05884a419f29a3bfa8c2f9da"
     }
   ],
-  "observability": { "enabled": true }
+  "observability": {
+    "enabled": true
+  }
 }
