@@ -28,8 +28,9 @@ tabs:
         image: "/exit/coupang/4.png"
       - stepNumber: 4
         title: "이용 내역 및 잔여 혜택 최종 확인"
-        description: "현재 소지 중인 쿠폰, 캐시, 최근 구매 내역 등이 최종 정리되었는지 확인합니다. 미정리 항목이 없다면 아래 탈퇴 동의 항목에 체크합니다."
+        description: "아래 탈퇴 동의 항목에 체크합니다."
         image: "/exit/coupang/5.png"
+        tip: "현재 소지 중인 쿠폰, 캐시, 최근 구매 내역 등이 최종 정리되었는지 확인하세요."
       - stepNumber: 5
         title: "탈퇴 완료"
         description: "하단의 '탈퇴하기' 버튼을 누르면 쿠팡 계정 영구 탈퇴가 완료됩니다."
