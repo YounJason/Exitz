@@ -4,7 +4,7 @@ serviceName: "테무 (Temu)"
 domain: "temu.com"
 pubDate: 2026-08-09
 description: "테무 계정 삭제 절차, 크레딧 및 쿠폰 소멸 유의사항, 7일 유예 기간 및 본인 인증 절차 안내"
-logo: "/exit/temu/1.jpg"
+logo: "/exit/temu/1.png"
 tabs:
   - id: "pc"
     label: "컴퓨터"
