@@ -19,8 +19,8 @@ tabs:
       - stepNumber: 2
         title: "'회원 탈퇴' 선택"
         description: "설정 페이지의 '개인 정보' 항목 오른쪽에 위치한 '회원 탈퇴' 링크를 클릭합니다."
-        actionUrl: "https://www.aliexpress.com"
-        actionText: "AliExpress 설정 페이지"
+        actionUrl: "https://privacy.aliexpress.com/home#/request/delete"
+        actionText: "AliExpress 회원 탈퇴 페이지"
         image: "/exit/aliexpress/3.png"
       - stepNumber: 3
         title: "계정 삭제 유의사항 확인 및 삭제 진행"
