@@ -18,7 +18,8 @@
       "/exit",
       "/exit/",
       "/help",
-      "/help/"
+      "/help/",
+      "/documents/*"
     ]
   },
   "kv_namespaces": [
