@@ -24,17 +24,17 @@ tabs:
         image: "/exit/google_3.png"
       - stepNumber: 3
         title: "'Google 계정 삭제' 메뉴 이동"
-        description: "페이지를 아래로 스크롤하여 '옵션 더보기' 또는 '데이터 관리' 섹션에 있는 'Google 계정 삭제'를 클릭하세요."
+        description: "페이지를 아래로 스크롤하여 'Google 계정 삭제'를 클릭하세요."
         actionUrl: "https://myaccount.google.com/deleteaccount"
         actionText: "Google 계정 삭제 페이지"
         image: "/exit/google_4.png"
       - stepNumber: 4
-        title: "비밀번호 재인증 및 데이터 백업 확인"
-        description: "계정 보안을 위해 비밀번호를 입력하고 로그인 과정을 완료하세요. 삭제될 서비스 목록과 데이터 백업 링크를 확인합니다."
+        title: "본인 확인"
+        description: "본인 인증을 진행하세요."
         image: "/exit/google_5.png"
       - stepNumber: 5
-        title: "동의 항목 체크 및 삭제 완료"
-        description: "하단의 유의사항 동의 체크박스 2개에 모두 체크한 후 '계정 삭제' 버튼을 누르면 구글 계정이 삭제됩니다."
+        title: "유의사항 확인 및 계정 삭제 완료"
+        description: "삭제되는 서비스 내역을 확인하고, 하단 동의 체크박스에 체크한 뒤 '계정 삭제' 버튼을 클릭하면 삭제가 완료됩니다."
         image: "/exit/google_6.png"
 
   - id: "mobile"
@@ -49,15 +49,15 @@ tabs:
         image: "/exit/google_7.jpg"
       - stepNumber: 2
         title: "'Google 계정 관리' 진입"
-        description: "프로필 하단의 'Google 계정 관리' 버튼을 터치하세요."
+        description: "'Google 계정 관리' 버튼을 터치하세요."
         image: "/exit/google_8.jpg"
       - stepNumber: 3
         title: "'데이터 및 개인 정보 보호' 탭 선택"
-        description: "상단 메뉴 탭에서 '데이터 및 개인 정보 보호'를 터치하세요."
+        description: "메뉴 탭에서 '데이터 및 개인 정보 보호'를 터치하세요."
         image: "/exit/google_9.jpg"
       - stepNumber: 4
         title: "'Google 계정 삭제' 선택 및 본인 확인"
-        description: "화면을 최하단으로 스크롤하여 'Google 계정 삭제'를 터치하고, 지문/패턴 또는 비밀번호로 본인 인증을 진행하세요."
+        description: "화면을 최하단으로 스크롤하여 'Google 계정 삭제'를 터치하고, 본인 인증을 진행하세요."
         image: "/exit/google_10.jpg"
       - stepNumber: 5
         title: "유의사항 확인 및 계정 삭제 완료"
