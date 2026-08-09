@@ -56,6 +56,9 @@ const currentUrl = Astro.url.toString();
                         <div class="tip-content">
                             <h2>{post.data.title}</h2>
                             <p>{post.data.description}</p>
+                            <span class="pub-date">
+                                {post.data.pubDate.toISOString().slice(0, 10)}
+                            </span>
                             <span class="view-badge">
                                 <span aria-hidden="true">👁</span>
                                 {(viewMap[post.slug] || 0).toLocaleString("ko-KR")}
@@ -109,7 +112,11 @@ const currentUrl = Astro.url.toString();
         <div class="tip-content">
           <h2>${escapeHtml(post.title)}</h2>
           <p>${escapeHtml(post.description)}</p>
-          <span class="view-badge"><span aria-hidden="true">👁</span>${views.toLocaleString("ko-KR")}</span>
+          <span class="pub-date">${post.data.pubDate.toISOString().slice(0, 10)}</span>
+          <span class="view-badge">
+            <span aria-hidden="true">👁</span>
+            ${views.toLocaleString("ko-KR")}
+          </span>
         </div>
         <span class="card-arrow" aria-hidden="true">↗</span>
       </a>
@@ -259,8 +266,7 @@ const currentUrl = Astro.url.toString();
         align-items: center;
         gap: 4px;
         margin-top: 10px;
-        font-size: 0.78rem;
-        font-weight: 600;
+        font-size: 0.75rem;
         color: var(--muted);
     }
     :global(.card-arrow) {
@@ -316,4 +322,11 @@ const currentUrl = Astro.url.toString();
             font-size: 0.8rem;
         }
     }
+
+  .pub-date {
+    display: inline-block;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-right: 8px;
+  }
 </style>

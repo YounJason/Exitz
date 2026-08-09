@@ -40,8 +40,8 @@ const { Content } = await post.render();
             <p class="description">{post.data.description}</p>
           )
         }
-        <span
-          >최근 업데이트: {post.data.pubDate.toISOString().slice(0, 10)}</span
+        <span class="pub-date">
+          최근 업데이트: {post.data.pubDate.toISOString().slice(0, 10)}</span
         >
         <span class="view-count-badge">
           <span aria-hidden="true">👁</span>
@@ -220,5 +220,9 @@ const { Content } = await post.render();
     max-width: 100%;
     border-radius: 12px;
     margin: 24px 0;
+  }
+
+  .pub-date {
+    margin-right: 12px;
   }
 </style>

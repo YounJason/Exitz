@@ -110,7 +110,8 @@ const howToSchema = {
         <h1>{data.title}</h1>
         <p class="description">{data.description}</p>
         <div class="article-meta">
-          <span>최근 업데이트: {data.pubDate.toISOString().slice(0, 10)}</span>
+          <span class="pub-date">최근 업데이트: {data.pubDate.toISOString().slice(0, 10)}</span
+          >
           <span class="view-count-badge">
             <span aria-hidden="true">👁</span>
             <span id="view-count">-</span>
@@ -1019,5 +1020,9 @@ const howToSchema = {
       align-items: flex-start;
       gap: 8px;
     }
+  }
+
+  .pub-date {
+    margin-right: 12px;
   }
 </style>

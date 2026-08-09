@@ -69,12 +69,6 @@ const currentUrl = Astro.url.toString();
                         <div class="card-copy">
                             <h2>{post.data.serviceName}</h2>
                             <span class="domain">{post.data.domain}</span>
-                            <span class="view-badge">
-                                <span aria-hidden="true">👁</span>
-                                {(viewMap[post.slug] || 0).toLocaleString(
-                                    "ko-KR",
-                                )}
-                            </span>
                         </div>
                         <span class="card-arrow" aria-hidden="true">
                             ↗
@@ -130,7 +124,6 @@ const currentUrl = Astro.url.toString();
           <h2>${escapeHtml(post.serviceName)}</h2>
           <span class="domain">${escapeHtml(post.domain)}</span>
         </div>
-        <span class="view-badge"><span aria-hidden="true">👁</span>${views.toLocaleString("ko-KR")}</span>
         <span class="card-arrow" aria-hidden="true">↗</span>
       </a>
     `;
@@ -303,17 +296,6 @@ const currentUrl = Astro.url.toString();
     :global(.guide-card:hover .card-arrow) {
         color: var(--ink);
         transform: translate(3px, calc(-50% - 3px));
-    }
-    :global(.view-badge) {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        flex-shrink: 0;
-        margin-right: 18px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: var(--muted);
-        white-space: nowrap;
     }
     .sentinel {
         display: flex;

@@ -1,18 +1,18 @@
 import type { ViewMap } from "./views";
 
-export type SortOption = "views" | "latest" | "oldest" | "alpha";
+export type SortOption = "latest" | "oldest" | "views" | "alpha";
 
 export const SORT_LABELS: Record<SortOption, string> = {
+  views: "조회수순",
   latest: "최신순",
   oldest: "날짜순",
-  views: "조회수순",
   alpha: "가나다순",
 };
 
 export const SORT_OPTIONS: SortOption[] = [
+  "views",
   "latest",
   "oldest",
-  "views",
   "alpha",
 ];
 
@@ -20,15 +20,15 @@ export function normalizeSort(
   value: string | null | undefined,
 ): SortOption {
   if (
+    value === "views" ||
     value === "latest" ||
     value === "oldest" ||
-    value === "views" ||
     value === "alpha"
   ) {
     return value;
   }
 
-  return "latest";
+  return "views";
 }
 
 type SortablePost = {
