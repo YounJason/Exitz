@@ -272,7 +272,9 @@ const placeholderDomains = exitPosts.map((post: any) => post.data.domain);
     if (!query) return [];
 
     try {
-      const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+      const response = await fetch(
+        `/api/search?q=${encodeURIComponent(query)}`,
+      );
       if (!response.ok) return [];
       return await response.json();
     } catch (error) {
@@ -1126,10 +1128,10 @@ const placeholderDomains = exitPosts.map((post: any) => post.data.domain);
       padding: 40px 0;
     }
     .guide-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
     .tips-list {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
     .showcase-container {
       padding: 60px 16px;
