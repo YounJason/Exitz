@@ -21,14 +21,13 @@
       "/help/"
     ]
   },
-},
-"kv_namespaces": [
-  {
-    "binding": "VIEWS",
-    "id": "683a691d05884a419f29a3bfa8c2f9da"
+  "kv_namespaces": [
+    {
+      "binding": "VIEWS",
+      "id": "683a691d05884a419f29a3bfa8c2f9da"
+    }
+  ],
+  "observability": {
+    "enabled": true
   }
-],
-"observability": {
-  "enabled": true
-}
 }
