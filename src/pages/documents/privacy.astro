@@ -1,0 +1,106 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import PrivacyContent from "./privacy.md";
+
+const currentUrl = new URL(Astro.url.pathname, Astro.site ?? "https://exitz.me").toString();
+---
+
+<Layout
+  title="개인정보처리방침"
+  url={currentUrl}
+  type="article"
+>
+  <div class="document-container">
+    <nav class="breadcrumb">
+      <a href="/">Exitz</a> &gt; <span>개인정보처리방침</span>
+    </nav>
+
+    <article class="article-content">
+      <div class="markdown-body">
+        <PrivacyContent />
+      </div>
+    </article>
+  </div>
+</Layout>
+
+<style>
+  .document-container {
+    width: min(820px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 48px 0 80px;
+  }
+
+  .breadcrumb {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 24px;
+    font-weight: 500;
+  }
+
+  .breadcrumb a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover {
+    text-decoration: underline;
+  }
+
+  .article-content h1 {
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+
+  .markdown-body :global(h2) {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-top: 36px;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+
+  .markdown-body :global(h3) {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-top: 24px;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+
+  .markdown-body :global(p) {
+    margin-bottom: 16px;
+    color: var(--ink);
+    line-height: 1.7;
+    font-size: 1rem;
+  }
+
+  .markdown-body :global(ol),
+  .markdown-body :global(ul) {
+    margin: 0 0 20px 24px;
+    color: var(--ink);
+    line-height: 1.7;
+  }
+
+  .markdown-body :global(li) {
+    margin-bottom: 8px;
+  }
+
+  .markdown-body :global(blockquote) {
+    background: #f2f4f6;
+    border-left: 4px solid var(--ink);
+    padding: 16px 20px;
+    border-radius: 0 12px 12px 0;
+    margin: 24px 0;
+    color: #333d4b;
+    font-size: 0.95rem;
+  }
+
+  .markdown-body :global(strong) {
+    font-weight: 700;
+  }
+</style>
