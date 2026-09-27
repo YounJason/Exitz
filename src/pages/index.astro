@@ -51,6 +51,14 @@ const placeholderDomains = exitPosts.map((post: any) => post.data.domain);
         >
         </div>
       </div>
+      <a
+        href="https://forms.gle/YOUR_FORM_ID"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="report-link"
+      >
+        찾는 가이드가 없다면, 알려주세요. 바로 만들어드릴게요 →
+      </a>
     </div>
   </section>
 
@@ -540,6 +548,22 @@ const placeholderDomains = exitPosts.map((post: any) => post.data.domain);
   }
   .search-wrapper {
     position: relative;
+  }
+  .report-link {
+    display: inline-block;
+    margin-top: 18px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease;
+  }
+  .report-link:hover {
+    color: var(--ink);
+    border-bottom-color: var(--ink);
   }
   .suggestions-dropdown {
     position: absolute;
